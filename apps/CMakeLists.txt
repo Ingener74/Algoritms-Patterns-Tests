@@ -7,3 +7,5 @@ add_subdirectory(test0001)
 add_subdirectory(test_boost_asio)
 
 add_subdirectory(tests)
+
+add_subdirectory(patterns)
