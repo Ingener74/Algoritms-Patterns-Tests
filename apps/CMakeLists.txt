@@ -9,3 +9,5 @@ add_subdirectory(test_boost_asio)
 add_subdirectory(tests)
 
 add_subdirectory(patterns)
+
+add_subdirectory(MyQt)
