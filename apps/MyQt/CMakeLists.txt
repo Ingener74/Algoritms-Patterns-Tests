@@ -12,8 +12,14 @@ file(GLOB UIS     ui/*.ui)
 
 QT4_WRAP_UI(UI_SOURCES ${UIS})
 QT4_WRAP_CPP(MOC_SOURCES src/MyQtMainWindow.h)
+QT4_ADD_RESOURCES(RES_SOURCES res/myqtres.qrc)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${UI_SOURCES} ${MOC_SOURCES})
+add_executable(${PROJECT_NAME} 
+    ${SOURCES} 
+    ${UI_SOURCES} 
+    ${MOC_SOURCES} 
+    ${RES_SOURCES}
+)
 
 set(LIBS
     ${QT_LIBRARIES}
