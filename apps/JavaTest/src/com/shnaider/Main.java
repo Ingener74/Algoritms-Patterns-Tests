@@ -5,7 +5,7 @@ import java.io.Console;
 public class Main {
 	
 	static{
-		System.load("modules/test_jni/libtest_jni.so");
+		System.loadLibrary("test_jni");
 	}
 	private native static void start();
 
