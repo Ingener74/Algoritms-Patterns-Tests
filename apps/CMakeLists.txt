@@ -11,3 +11,7 @@ add_subdirectory(tests)
 add_subdirectory(patterns)
 
 add_subdirectory(MyQt)
+
+#if(Java_FOUND)
+    add_subdirectory(JavaTest)
+#endif()
