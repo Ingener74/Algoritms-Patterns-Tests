@@ -8,8 +8,6 @@ include(${QT_USE_FILE})
 find_package(Java)
 include(UseJava)
 
-message(STATUS "java status ${Java_FOUND}")
-
 find_package(JNI)
 if(JNI_FOUND)
     include_directories(${JNI_INCLUDE_DIRS})
