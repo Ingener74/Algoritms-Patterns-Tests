@@ -17,3 +17,5 @@ add_subdirectory(MyQt)
 #endif()
 
 add_subdirectory(highload)
+
+add_subdirectory(multithread_exception)
