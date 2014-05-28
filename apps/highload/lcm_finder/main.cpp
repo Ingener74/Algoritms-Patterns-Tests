@@ -26,6 +26,7 @@ using namespace std;
  */
 vector<uint64_t> expand(uint64_t n)
 {
+    if (n == 0) throw std::runtime_error("expand error");
     vector<uint64_t> multipliers;
     uint64_t m = 2;
     while (n != 1)
@@ -36,6 +37,10 @@ vector<uint64_t> expand(uint64_t n)
             {
                 multipliers.push_back(m);
                 break;
+            }
+            else
+            {
+                continue;
             }
         }
         else
@@ -73,6 +78,20 @@ int main(int argc, char **argv)
         /*
          * futures for async tasks
          */
+        thread status([&](){
+            for(;;)
+            {
+                {
+                    unique_lock<mutex> lock(mdm);
+                    if(stop)
+                    return;
+                    cout << "size of deque " << md.size() << endl;
+                }
+
+                this_thread::sleep_for(chrono::seconds(3));
+            }
+        });
+
         future<map<uint64_t, uint64_t>> futures[N];
 
         for (auto &f : futures)
@@ -82,29 +101,47 @@ int main(int argc, char **argv)
              */
             f = async(launch::async, [&]()
             {
-                map<uint64_t, uint64_t> res;
-                for(;;)
+                try
                 {
-                    uint64_t nok = 0;
+                    map<uint64_t, uint64_t> res;
+                    for(;;)
                     {
-                        unique_lock<mutex> lock(mdm);
-                        if(md.empty())
+                        uint64_t nok = 0;
                         {
-                            mdc.wait(lock);
-                        }
-                        else if(stop)
-                        {
-                            return res;
-                        }
-                        nok = md.front();
-                        md.pop_front();
-                    }
+                            unique_lock<mutex> lock(mdm);
+//                            if(md.empty())
+//                            {
+//                                mdc.wait(lock);
+//                            }
+//                            else if(stop)
+//                            {
+//                                return res;
+//                            }
 
-                    auto r = expand(nok);
-                    for(auto &prime: r)
-                    {
-                        res[prime]++;
+                            if(md.empty() && stop)
+                            {
+                                return res;
+                            }
+                            else if(md.empty())
+                            {
+                                mdc.wait(lock);
+                            }
+
+                            nok = md.front();
+                            md.pop_front();
+                        }
+
+                        auto r = expand(nok);
+                        if(r.empty())throw std::runtime_error("have no primi numbers");
+                        for(auto &prime: r)
+                        {
+                            res[prime]++;
+                        }
                     }
+                }
+                catch (const std::exception& e)
+                {
+                    cout << "async task error: " << e.what() << endl;
                 }
             });
         }
@@ -112,8 +149,8 @@ int main(int argc, char **argv)
         /*
          * getting numbers from stdin
          */
-        string line;
-        while (cin >> line)
+
+        for (string line; cin >> line;)
         {
             uint64_t inputNumber;
             stringstream inputStream;
@@ -129,8 +166,11 @@ int main(int argc, char **argv)
         /*
          * stopping all threads
          */
-        stop = true;
-        mdc.notify_all();
+        {
+            unique_lock<mutex> lock(mdm);
+            stop = true;
+            mdc.notify_all();
+        }
 
         /*
          * collect all the eggs in one basket :)
@@ -144,8 +184,7 @@ int main(int argc, char **argv)
             for (auto& p : r)
             {
 //                cout << "prime is " << p.first << " power " << p.second << endl;
-                if(p.second > nok[p.first])
-                    nok[p.first] = p.second;
+                if (p.second > nok[p.first]) nok[p.first] = p.second;
             }
         }
 
@@ -153,7 +192,8 @@ int main(int argc, char **argv)
          * print result
          */
         cout << "lcm" << endl;
-        for(auto &n: nok){
+        for (auto &n : nok)
+        {
             cout << "prime " << n.first << " power " << n.second << endl;
         }
     }
