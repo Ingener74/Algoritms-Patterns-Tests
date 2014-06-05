@@ -9,9 +9,13 @@ find_package(Java)
 include(UseJava)
 
 find_package(JNI)
-if(JNI_FOUND)
-    include_directories(${JNI_INCLUDE_DIRS})
-endif()
+
+find_package(PythonLibs)
+
+include_directories(
+    ${JNI_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
+)
 
 add_definitions(-std=c++11)
 
