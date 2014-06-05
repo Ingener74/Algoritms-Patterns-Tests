@@ -20,6 +20,10 @@ add_subdirectory(highload)
 
 add_subdirectory(multithread_exception)
 
+if(PYTHONLIBS_FOUND)
+    add_subdirectory(python)
+endif()
+
 if(LUA51_FOUND)
     add_subdirectory(lua)
 endif()

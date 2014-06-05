@@ -13,6 +13,11 @@ if(JNI_FOUND)
     include_directories(${JNI_INCLUDE_DIRS})
 endif()
 
+find_package(PythonLibs)
+if(PYTHONLIBS_FOUND)
+    include_directories(${PYTHON_INCLUDE_DIRS})
+endif()
+
 find_package(Lua51)
 if(LUA51_FOUND)
     include_directories(${LUA_INCLUDE_DIR})
