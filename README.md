@@ -4,5 +4,5 @@ This repository contain tests for design patterns, some boost features, Qt featu
 
 install dependency
 ```
-sudo apt-get install boost-dev python-dev libtolua++5.1-dev
+sudo apt-get install libboost-dev python-dev libtolua++5.1-dev
 ```

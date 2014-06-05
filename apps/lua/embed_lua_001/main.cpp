@@ -13,6 +13,16 @@
 
 using namespace std;
 
+extern "C"
+{
+
+static int l_testLut(lua_State* L)
+{
+    return 128;
+}
+
+}
+
 int main(int argc, char **argv)
 {
     try
