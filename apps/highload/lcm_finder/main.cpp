@@ -21,11 +21,19 @@
 
 using namespace std;
 
+
+
 /*
  * expand to prime numbers
+ *
+ * Use this algorithm
+ * http://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%BA%D0%B2%D0%B0%D0%B4%D1%80%D0%B0%D1%82%D0%B8%D1%87%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B5%D1%88%D0%B5%D1%82%D0%B0
+ *
  */
 vector<uint64_t> expand(uint64_t n)
 {
+    cout << "expand n = " << n << endl;
+
     if (n == 0) throw std::runtime_error("expand error");
     vector<uint64_t> multipliers;
     uint64_t m = 2;
@@ -40,6 +48,7 @@ vector<uint64_t> expand(uint64_t n)
             }
             else
             {
+//                cout << "2 n = " << n << " m = " << m << endl;
                 continue;
             }
         }
@@ -49,6 +58,7 @@ vector<uint64_t> expand(uint64_t n)
             multipliers.push_back(m);
             m = 2;
         }
+//        cout << "n = " << n << " m = " << m << endl;
     }
     return multipliers;
 }
@@ -58,6 +68,10 @@ int main(int argc, char **argv)
     try
     {
         cout << "lcm finder" << endl;
+
+        if (argc != 2) throw std::runtime_error(""
+                "You must pass number of threads\n"
+                "Usage: ./lcm_finder <number-of-threads>");
 
         /*
          * main deque
@@ -73,7 +87,10 @@ int main(int argc, char **argv)
         /*
          * number of threads
          */
-        const int N = 4;
+        stringstream interpret;
+        interpret << argv[1];
+        int N = 4;
+        interpret >> N;
 
         /*
          * futures for async tasks
@@ -92,7 +109,7 @@ int main(int argc, char **argv)
             }
         });
 
-        future<map<uint64_t, uint64_t>> futures[N];
+        vector<future<map<uint64_t, uint64_t>>> futures(N);
 
         for (auto &f : futures)
         {

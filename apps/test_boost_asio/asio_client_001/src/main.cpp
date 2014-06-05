@@ -8,20 +8,22 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-void connect_handler(const boost::system::error_code&);
+using namespace boost;
+using namespace std;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     std::cout << "test asio client" << std::endl;
 
-    using namespace boost::asio;
-    io_service service;
-    ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 2001);
-    ip::tcp::socket sock(service);
-    sock.async_connect(ep, connect_handler);
+    asio::io_service service;
+    asio::ip::tcp::endpoint ep(asio::ip::address::from_string("127.0.0.1"),
+            2001);
+    asio::ip::tcp::socket sock(service);
+    sock.async_connect(ep, [](const system::error_code& ec)
+    {
+        cout << "connnection success" << endl;
+    });
     service.run();
 
     return 0;
-}
-
-void connect_handler(const boost::system::error_code& ec){
 }

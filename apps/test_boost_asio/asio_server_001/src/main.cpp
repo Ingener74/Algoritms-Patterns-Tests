@@ -13,39 +13,50 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/thread.hpp>
 
-using namespace boost::asio;
-using namespace boost::local_function;
+using namespace boost;
+using namespace std;
 
-typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
+int main(int argc, char **argv)
+{
+    try
+    {
+        std::cout << "test asio server" << std::endl;
 
-void client_session(socket_ptr);
+        asio::io_service service;
 
-int main(int argc, char **argv) {
-    std::cout << "test asio server" << std::endl;
+        asio::ip::tcp::endpoint endp(asio::ip::tcp::v4(), 2001);
 
-    io_service service;
-    ip::tcp::endpoint endp(ip::tcp::v4(), 2001);
-    ip::tcp::acceptor acc(service, endp);
-    while(1){
-        socket_ptr sock(new ip::tcp::socket(service));
-        acc.accept(*sock);
+        asio::ip::tcp::acceptor acc(service, endp);
 
-//        int BOOST_LOCAL_FUNCTION(void) {
-//            return 0;
-//        } BOOST_LOCAL_FUNCTION(test_thread)
+        while (true)
+        {
+            auto sock = make_shared<asio::ip::tcp::socket>(service);
+            acc.accept(*sock);
 
-        boost::thread(boost::bind(client_session, sock));
-    }
-
-    return 0;
-}
-
-void client_session(socket_ptr sock){
-    while(true){
-        char data[512];
-        size_t len = sock->read_some(buffer(data));
-        if(len > 0){
-            write(*sock, buffer("ok", 2));
+            auto th = thread([sock](boost::shared_ptr<asio::ip::tcp::socket> sock)
+            {
+                try
+                {
+                    while (true)
+                    {
+                        char data[512];
+                        size_t len = sock->read_some(asio::buffer(data));
+                        if (len > 0)
+                        {
+                            write(*sock, asio::buffer("ok", 2));
+                        }
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    cout << "client thread error: " << e.what() << endl;
+                }
+            }, sock);
         }
     }
+    catch (const std::exception& e)
+    {
+        cout << "error: " << e.what() << endl;
+    }
+    return 0;
 }
