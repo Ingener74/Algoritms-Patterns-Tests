@@ -13,6 +13,11 @@ if(JNI_FOUND)
     include_directories(${JNI_INCLUDE_DIRS})
 endif()
 
+find_package(Lua51)
+if(LUA51_FOUND)
+    include_directories(${LUA_INCLUDE_DIR})
+endif()
+
 add_definitions(-std=c++11)
 
 add_subdirectory(modules)
