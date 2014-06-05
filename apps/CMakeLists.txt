@@ -19,3 +19,7 @@ add_subdirectory(MyQt)
 add_subdirectory(highload)
 
 add_subdirectory(multithread_exception)
+
+if(LUA51_FOUND)
+    add_subdirectory(lua)
+endif()
