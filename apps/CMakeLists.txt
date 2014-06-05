@@ -24,6 +24,6 @@ if(PYTHONLIBS_FOUND)
     add_subdirectory(python)
 endif()
 
-if(LUA51_FOUND)
+if(LUA_FOUND)
     add_subdirectory(lua)
 endif()

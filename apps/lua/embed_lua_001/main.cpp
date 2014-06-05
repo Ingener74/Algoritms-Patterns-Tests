@@ -9,9 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <lua5.1/lua.h>
-#include <lua5.1/lauxlib.h>
-#include <lua5.1/lualib.h>
+#include <lua.hpp>
 
 using namespace std;
 
@@ -21,19 +19,19 @@ int main(int argc, char **argv)
     {
         cout << "Lua embedding tests" << endl;
 
-        lua_State *L = lua_open();
+        lua_State *L = luaL_newstate();
 
         string text = ""
-                "local function main()"
-                "   print('Lua test')"
-                "end"
-                "main()";
+                "local function main() "
+                "   print('Lua test')  "
+                "end                   "
+                "main()                ";
 
         luaopen_io(L);
+        luaopen_math(L);
         luaopen_base(L);
         luaopen_table(L);
         luaopen_string(L);
-        luaopen_math(L);
 
         int res = luaL_loadstring(L, text.c_str());
         if (!res)
