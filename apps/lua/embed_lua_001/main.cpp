@@ -79,6 +79,17 @@ int main(int argc, char **argv)
         lua_pushcfunction(L, l_new_print);
         lua_setglobal(L, "new_print");
 
+        lua_getglobal(L, "testLuaFunc");
+//        lua_isfunction(L, -1);
+//        if(!lua_isfunction(L, -1)){
+//            lua_pop(L, 1);
+//            throw std::runtime_error("test_lua_func is not lua function");
+//        }
+//        if (lua_pcall(L, 0, 1, 0) != 0)
+//        {
+//            throw std::runtime_error("can't call lua function");
+//        }
+
         int res = luaL_loadstring(L, text.c_str());
         if (!res)
         {
