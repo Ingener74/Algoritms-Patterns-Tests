@@ -12,3 +12,17 @@ print("Test string from C function = ", testString());
 function testLuaFunc()
   print("Lua function called");
 end
+
+b = 34;
+
+function printB()
+  print('b = ', b);
+end
+
+function testGetFromLua()
+  return b;
+end
+
+function testSetInLua(new_b)
+  b = new_b
+end

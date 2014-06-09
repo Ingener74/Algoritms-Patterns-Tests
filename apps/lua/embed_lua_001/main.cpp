@@ -18,6 +18,7 @@ using namespace std;
  * helpful
  *
  * * https://code.google.com/p/zester/wiki/Lua_C
+ * * http://lua-users.org/wiki/BindingCodeToLua
  */
 
 extern "C"
@@ -37,8 +38,6 @@ extern "C"
 
     static int l_new_print(lua_State* L){
 
-//        cout << "From lua print: ";
-
         for(int i = 1; i < lua_gettop(L) + 1; ++i){
             cout << lua_tostring(L, i);
         }
@@ -46,6 +45,29 @@ extern "C"
         return 0;
     }
 
+}
+
+int getB(lua_State* L)
+{
+    lua_getglobal(L, "testGetFromLua");
+    lua_pcall(L, 0, 1, 0);
+
+    int res = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+
+    return res;
+}
+void setB(lua_State* L, int b)
+{
+    lua_getglobal(L, "testSetInLua");
+    lua_pushnumber(L, b);
+    lua_call(L, 1, 0);
+}
+
+void printB(lua_State* L)
+{
+    lua_getglobal(L, "printB");
+    lua_call(L, 0, 0);
 }
 
 int main(int argc, char **argv)
@@ -64,9 +86,9 @@ int main(int argc, char **argv)
         string text((std::istreambuf_iterator<char>(file)),
                 std::istreambuf_iterator<char>());
 
-        lua_register(L, "testMul2Pi",   l_testMul2Pi);
+        lua_register(L, "testMul2Pi", l_testMul2Pi);
         lua_register(L, "testString", l_testString);
-        lua_register(L, "new_print",  l_new_print);
+        lua_register(L, "new_print", l_new_print);
 
         int res = luaL_loadstring(L, text.c_str());
         if (!res)
@@ -76,6 +98,12 @@ int main(int argc, char **argv)
 
         lua_getglobal(L, "testLuaFunc");
         lua_pcall(L, 0, 0, 0);
+
+        printB(L);
+        cout << "b = " << getB(L) << endl;
+        setB(L, 72);
+        printB(L);
+        cout << "b = " << getB(L) << endl;
 
         lua_close(L);
 
