@@ -27,3 +27,5 @@ endif()
 if(LUA_FOUND)
     add_subdirectory(lua)
 endif()
+
+add_subdirectory(exceptions)
