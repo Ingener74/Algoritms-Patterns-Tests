@@ -8,10 +8,9 @@ print = function(...)
 end
 
 print('Test Lua Script');
-print('Test number from C function = ', test_lua(3), ' = 3 * 3.1415926');
+print('Test number from C function = ', testMul2Pi(3), ' = 3 * 3.1415926');
 print("Test string from C function = ", testString());
 
 function testLuaFunc()
   print("Lua function called");
-  return 1;
 end

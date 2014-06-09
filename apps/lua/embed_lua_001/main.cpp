@@ -17,7 +17,7 @@ using namespace std;
 extern "C"
 {
 
-    static int l_testLua(lua_State* L)
+    static int l_testMul2Pi(lua_State* L)
     {
         double t = lua_tonumber(L, 1);
         lua_pushnumber(L, t * 3.141592);
@@ -30,6 +30,9 @@ extern "C"
     }
 
     static int l_new_print(lua_State* L){
+
+        cout << "From lua print: ";
+
         for(int i = 1; i < lua_gettop(L) + 1; ++i){
             cout << lua_tostring(L, i);
         }
@@ -60,41 +63,21 @@ int main(int argc, char **argv)
 
         cout << "Script result" << endl << endl;
 
-        luaopen_io(L);
-        luaopen_os(L);
-        luaopen_math(L);
-        luaopen_base(L);
-        luaopen_debug(L);
-        luaopen_table(L);
-        luaopen_string(L);
-        luaopen_package(L);
-        luaopen_coroutine(L);
+        luaL_openlibs(L);
 
-        lua_pushcfunction(L, l_testLua);
-        lua_setglobal(L, "test_lua");
+        lua_register(L, "testMul2Pi",   l_testMul2Pi);
+        lua_register(L, "testString", l_testString);
+        lua_register(L, "new_print",  l_new_print);
 
-        lua_pushcfunction(L, l_testString);
-        lua_setglobal(L, "testString");
-
-        lua_pushcfunction(L, l_new_print);
-        lua_setglobal(L, "new_print");
-
-        lua_getglobal(L, "testLuaFunc");
-//        lua_isfunction(L, -1);
-//        if(!lua_isfunction(L, -1)){
-//            lua_pop(L, 1);
-//            throw std::runtime_error("test_lua_func is not lua function");
-//        }
-//        if (lua_pcall(L, 0, 1, 0) != 0)
-//        {
-//            throw std::runtime_error("can't call lua function");
-//        }
 
         int res = luaL_loadstring(L, text.c_str());
         if (!res)
         {
             res = lua_pcall(L, 0, LUA_MULTRET, 0);
         }
+
+        lua_getglobal(L, "testLuaFunc");
+        lua_pcall(L, 0, 0, 0);
 
         lua_close(L);
 
