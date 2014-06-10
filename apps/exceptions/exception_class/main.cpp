@@ -8,49 +8,70 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+#include <list>
+#include <functional>
+#include <binders.h>
 
 using namespace std;
 
 class Exception
 {
+    using ExceptionCallback = function<void(Exception&)>;
 public:
-    Exception() :
-            _cond(true)
-    {
-    }
-    Exception(bool condition) :
-            _cond(condition)
+    Exception()
     {
     }
     virtual ~Exception()
     {
     }
 
-    template<typename T>
-    Exception& operator<<(const T& other)
+    Exception& operator<<(ExceptionCallback ec)
     {
-        _s << other;
+        _cb.push_back(ec);
         return *this;
     }
 
-    Exception& operator<<(const Exception&)
+    template<typename T>
+    Exception& operator<<(const T& other)
     {
-        if (_cond) throw runtime_error(_s.str());
+        _ << other;
+        return *this;
+    }
+
+    Exception& operator<<(bool exceptionCondition)
+    {
+        if (exceptionCondition)
+        {
+            for (auto &cb : _cb)
+                cb(*this);
+            throw runtime_error(_.str());
+        }
         return *this;
     }
 
 private:
-    stringstream _s;
-    bool _cond;
+    stringstream _;
+    list<ExceptionCallback> _cb;
 };
+
+void foo(Exception& e){
+    e << "foo " << 48;
+}
 
 int main(int argc, char **argv)
 {
     try
     {
+        int c = 38;
+
         cout << "before test exception" << endl;
 
-        Exception(5 > 1) << "Test exception " << 3.1415 << Exception();
+//        Exception() << "Test exception " << [&](Exception& e)
+//        {
+//            e << "i was called on exception " << c;
+//        } << (5 > 1);
+
+        Exception() << "Test exception " << (5 > 1);
 
         cout << "after test exception" << endl;
     }
