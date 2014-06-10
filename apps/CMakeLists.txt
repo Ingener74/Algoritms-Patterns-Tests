@@ -25,3 +25,5 @@ if(LUA_FOUND)
 endif()
 
 add_subdirectory(exceptions)
+
+add_subdirectory(io)
