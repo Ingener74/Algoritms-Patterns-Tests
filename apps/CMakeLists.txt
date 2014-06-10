@@ -4,7 +4,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_subdirectory(test_boost_asio)
 
-add_subdirectory(tests)
+add_subdirectory(big_alloc_test)
 
 add_subdirectory(patterns)
 
@@ -15,8 +15,6 @@ add_subdirectory(MyQt)
 #endif()
 
 add_subdirectory(highload)
-
-add_subdirectory(multithread_exception)
 
 if(PYTHONLIBS_FOUND)
     add_subdirectory(python)
