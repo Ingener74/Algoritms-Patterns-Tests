@@ -1,14 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(PROJECT_NAME prototype)
-set(${PROJECT_NAME})
-
-set(SOURCES
-    src/main.cpp
-)
-add_executable(${PROJECT_NAME} ${SOURCES})
-
-set(LIBS
-    ${Boost_LIBRARIES}
-)
-target_link_libraries(${PROJECT_NAME} ${LIBS})
+add_executable(prototype main.cpp)
+target_link_libraries(prototype ${Boost_LIBRARIES})
