@@ -16,6 +16,7 @@
 #include <cstdint>
 #include <sstream>
 #include <iostream>
+#include <iterator>
 #include <stdexcept>
 #include <condition_variable>
 
@@ -167,18 +168,27 @@ int main(int argc, char **argv)
          * getting numbers from stdin
          */
 
-        for (string line; cin >> line;)
+//        for (string line; cin >> line;)
+//        {
+//            uint64_t inputNumber;
+//            stringstream inputStream;
+//            inputStream << line;
+//            inputStream >> inputNumber;
+//            {
+//                unique_lock<mutex> lock(mdm);
+//                md.push_back(inputNumber);
+//                mdc.notify_one();
+//            }
+//        }
+
         {
-            uint64_t inputNumber;
-            stringstream inputStream;
-            inputStream << line;
-            inputStream >> inputNumber;
-            {
-                unique_lock<mutex> lock(mdm);
-                md.push_back(inputNumber);
-                mdc.notify_one();
-            }
+            unique_lock<mutex> lock(mdm);
+            md = deque<uint64_t>((istream_iterator<uint64_t>(cin)),
+                    (istream_iterator<uint64_t>()));
+            mdc.notify_all();
         }
+
+        cout << "getting all numbers from stdin" << endl;
 
         /*
          * stopping all threads

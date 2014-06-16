@@ -165,6 +165,10 @@ int main(int argc, char **argv)
 {
     try
     {
+        bool b = true;
+
+        cout << "check boolalpha: b = " << boolalpha << b << endl;
+
         const int N = 60;
         int unsorted[N];
 
