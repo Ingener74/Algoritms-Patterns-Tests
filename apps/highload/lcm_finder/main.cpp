@@ -22,8 +22,6 @@
 
 using namespace std;
 
-
-
 /*
  * expand to prime numbers
  *

@@ -16,8 +16,9 @@ using namespace std;
 
 class Exception
 {
-    using ExceptionCallback = function<void(Exception&)>;
 public:
+    using ExceptionCallback = function<void(Exception&)>;
+
     Exception()
     {
     }
@@ -66,10 +67,11 @@ int main(int argc, char **argv)
 
         cout << "before test exception" << endl;
 
-//        Exception() << "Test exception " << [&](Exception& e)
-//        {
-//            e << "i was called on exception " << c;
-//        } << (5 > 1);
+        Exception::ExceptionCallback ec = [&](Exception& e)
+        {
+            e << "i was called in exception " << c;
+        };
+        Exception() << "Test exception " << ec << (5 > 1);
 
         Exception() << "Test exception " << (5 > 1);
 
