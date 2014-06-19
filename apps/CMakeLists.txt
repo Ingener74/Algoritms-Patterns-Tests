@@ -31,3 +31,5 @@ add_subdirectory(io)
 add_subdirectory(sorts)
 
 add_subdirectory(algorithms)
+
+add_subdirectory(speed_tests)
