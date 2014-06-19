@@ -31,14 +31,16 @@ extern "C"
         return 1;
     }
 
-    static int l_testString(lua_State* L){
+    static int l_testString(lua_State* L)
+    {
         lua_pushstring(L, "This string returned from C function");
         return 1;
     }
 
-    static int l_new_print(lua_State* L){
-
-        for(int i = 1; i < lua_gettop(L) + 1; ++i){
+    static int l_new_print(lua_State* L)
+    {
+        for (int i = 1; i < lua_gettop(L) + 1; ++i)
+        {
             cout << lua_tostring(L, i);
         }
         cout << endl;
