@@ -10,9 +10,9 @@ add_subdirectory(patterns)
 
 add_subdirectory(MyQt)
 
-#if(Java_FOUND)
+if(WITH_JAVA)
     add_subdirectory(JavaTest)
-#endif()
+endif()
 
 add_subdirectory(highload)
 

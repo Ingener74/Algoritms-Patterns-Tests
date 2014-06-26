@@ -10,6 +10,8 @@ include(${QT_USE_FILE})
 find_package(Java)
 include(UseJava)
 
+option(WITH_JAVA "Compile Java parts" OFF)
+
 find_package(JNI)
 if(JNI_FOUND)
     include_directories(${JNI_INCLUDE_DIRS})
