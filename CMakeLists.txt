@@ -27,6 +27,11 @@ if(LUA_FOUND)
     include_directories(${LUA_INCLUDE_DIR})
 endif()
 
+find_package(FLTK)
+if(FLTK_FOUND)
+    include_directories(${FLTK_INCLUDE_DIR})
+endif()
+
 add_definitions(-std=c++11)
 
 add_subdirectory(modules)
