@@ -77,17 +77,16 @@ int main(int argc, char **argv)
     try
     {
         {
-            ofstream test_file("test_file", ios::trunc);
-            test_file << "Resource concept" << endl;
-            test_file.flush();
-            test_file.close();
+            ofstream test_file("test_file", ios::app);
+            test_file << "Resource concept";
         }
 
         Resource testResource = ResourceFactory::createResource("test_file");
 
-        string testString((istream_iterator<char>(*testResource)), istream_iterator<char>());
+        string testString((istream_iterator<char>(*testResource)),
+                istream_iterator<char>());
 
-        cout << "test string " << testString << endl;
+        cout << "test string: " << endl << testString << endl;
     }
     catch (exception const & e)
     {

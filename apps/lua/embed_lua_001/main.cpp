@@ -85,8 +85,10 @@ int main(int argc, char **argv)
         luaL_openlibs(L);
 
         fstream file(argv[1]);
-        string text((std::istreambuf_iterator<char>(file)),
-                std::istreambuf_iterator<char>());
+        string text((istreambuf_iterator<char>(file)),
+                istreambuf_iterator<char>());
+
+        cout << "script source: " << endl << text << endl;
 
         lua_register(L, "testMul2Pi", l_testMul2Pi);
         lua_register(L, "testString", l_testString);
@@ -111,7 +113,7 @@ int main(int argc, char **argv)
 
         return EXIT_SUCCESS;
     }
-    catch (std::exception const & e)
+    catch (exception const & e)
     {
         cout << "error: " << e.what() << endl;
     }

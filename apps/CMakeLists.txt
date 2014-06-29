@@ -8,8 +8,6 @@ add_subdirectory(big_alloc_test)
 
 add_subdirectory(patterns)
 
-add_subdirectory(MyQt)
-
 if(WITH_JAVA)
     add_subdirectory(JavaTest)
 endif()

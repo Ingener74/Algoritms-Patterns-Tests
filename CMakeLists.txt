@@ -34,5 +34,10 @@ endif()
 
 add_definitions(-std=c++11)
 
+include_directories(
+    modules/test_externC/src
+    modules/test_jni/src
+)
+
 add_subdirectory(modules)
 add_subdirectory(apps)
