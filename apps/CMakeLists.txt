@@ -33,3 +33,5 @@ add_subdirectory(algorithms)
 add_subdirectory(speed_tests)
 
 add_subdirectory(gui)
+
+add_subdirectory(metaprogramming)
