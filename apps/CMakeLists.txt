@@ -34,4 +34,6 @@ add_subdirectory(speed_tests)
 
 add_subdirectory(gui)
 
+add_subdirectory(metaprogramming)
+
 add_subdirectory(customLiterals)
