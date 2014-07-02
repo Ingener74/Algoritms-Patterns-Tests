@@ -9,59 +9,83 @@
 
 using namespace std;
 
-template<typename T>
-void bar(T t)
+class Pony
 {
-    cout << t << endl;
+public:
+	Pony()
+	{
+	}
+	virtual ~Pony()
+	{
+	}
+
+	friend ostream& operator<<( ostream& out, const Pony& rho );
+
+private:
+	string pony_name_ = "Little Pony";
+};
+ostream& operator<<( ostream& out, const Pony& rho )
+{
+	out << rho.pony_name_;
+	return out;
 }
 
-template<typename ... Args>
-void foo(Args ... args)
+template <typename T>
+void foo( T t )
 {
-    cout << "sizeof... " << sizeof...(args) << endl;
-    foo(bar(args)...);
+	cout << t << endl;
+}
+
+template <typename T, typename ... Args>
+void foo( T t, Args ... args )
+{
+	cout << t << endl;
+	foo(args...);
 }
 
 namespace st
 {
 
-template<typename ... Args>
+template <typename ... Args>
 struct tuple;
 
-template<typename Head, typename ... Tail>
+template <typename Head, typename ... Tail>
 struct tuple<Head, Tail...> : tuple<Tail...>
 {
-    tuple(Head h, Tail ... tail) :
-            tuple<Tail...>(tail...), head_(h)
-    {
-    }
+	tuple( Head h, Tail ... tail ) :
+			tuple<Tail...>(tail...), head_(h)
+	{
+	}
 
-    using base_type = tuple<Tail...>;
-    using value_type = Head;
+	using base_type = tuple<Tail...>;
+	using value_type = Head;
 
-    base_type& base_ = static_cast<base_type&>(*this);
-    Head head_;
+	base_type& base_ = static_cast<base_type&>(*this);
+	Head head_;
 };
 
-template<>
+template <>
 struct tuple<>
 {
 };
 
 }  // namespace st
 
-int main(int argc, char **argv)
+int main( int argc, char **argv )
 {
-    try
-    {
-        st::tuple<double, const char*, const char*, int> testTuple(3.1415926, "Pi", "In america", 4);
+	try
+	{
+		foo("One", 2, "Three", Pony());
 
-        cout << testTuple.head_ << " " << testTuple.base_.head_ << " " << testTuple.base_.base_.head_ << " " << testTuple.base_.base_.base_.head_ << endl;
-    }
-    catch (exception const & e)
-    {
-        cerr << "Error: " << e.what() << endl;
-    }
-    return 0;
+		st::tuple<double, const char*, const char*, int> testTuple(3.1415926, "Pi", "In america", 4);
+
+		cout << testTuple.head_ << " " << testTuple.base_.head_ << " " << testTuple.base_.base_.head_ << " "
+				<< testTuple.base_.base_.base_.head_ << endl;
+	}
+	catch ( exception const & e )
+	{
+		cerr << "Error: " << e.what() << endl;
+	}
+	return 0;
 }
 
