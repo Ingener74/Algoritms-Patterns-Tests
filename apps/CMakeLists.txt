@@ -36,4 +36,4 @@ add_subdirectory(gui)
 
 add_subdirectory(metaprogramming)
 
-add_subdirectory(customLiterals)
+add_subdirectory(custom_literals)
