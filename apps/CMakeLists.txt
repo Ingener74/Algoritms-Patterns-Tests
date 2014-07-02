@@ -14,13 +14,7 @@ endif()
 
 add_subdirectory(highload)
 
-if(PYTHONLIBS_FOUND)
-    add_subdirectory(python)
-endif()
-
-if(LUA_FOUND)
-    add_subdirectory(lua)
-endif()
+add_subdirectory(embedding)
 
 add_subdirectory(exceptions)
 
