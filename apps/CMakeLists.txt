@@ -33,3 +33,5 @@ add_subdirectory(metaprogramming)
 add_subdirectory(custom_literals)
 
 add_subdirectory(system)
+
+add_subdirectory(format_class)
