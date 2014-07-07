@@ -34,19 +34,40 @@ private:
     fstream _file;
 };
 
+class PrintfBuf: public streambuf
+{
+public:
+	PrintfBuf()
+	{
+	}
+	virtual ~PrintfBuf()
+	{
+	}
+
+	virtual streamsize xsputn( const char_type* __s, streamsize __n )
+	{
+		char *b = new char[__n + 1];
+		snprintf(b, __n + 1, "%s", __s);
+		printf("%s", b);
+		delete[] b;
+		return __n;
+	}
+};
+
 int main(int argc, char **argv)
 {
     try
     {
         cout << "before redirection" << endl;
 
-        CustomStreamBuf csb("cout2custom");
+//        CustomStreamBuf csb("cout2custom");
+        PrintfBuf csb;
 
         streambuf* temp = cout.rdbuf();
 
         cout.rdbuf(&csb);
 
-        cout << "after redirection" << endl;
+        cout << "after redirection " << 100.4 << " bla " << 100500 << endl;
 
         cout.rdbuf(temp);
     }
