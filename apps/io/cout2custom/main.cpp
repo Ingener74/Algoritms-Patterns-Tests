@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <vector>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
@@ -16,7 +18,7 @@ class CustomStreamBuf: public std::streambuf
 public:
     CustomStreamBuf(const string& fileName)
     {
-        _file.open(fileName, ios::out);
+        _file.open(fileName.c_str(), ios::out);
     }
     virtual ~CustomStreamBuf()
     {
@@ -37,21 +39,38 @@ private:
 class PrintfBuf: public streambuf
 {
 public:
-	PrintfBuf()
+	PrintfBuf(): streambuf(), _buffer(1024)
 	{
+        setp(&_buffer.front(), &_buffer.back() + 1);
 	}
 	virtual ~PrintfBuf()
 	{
 	}
 
-	virtual streamsize xsputn( const char_type* __s, streamsize __n )
+    virtual streamsize xsputn( const char_type* __s, streamsize __n )
+    {
+        ssize_t s = epptr() - pptr();
+        if ( s >= __n )
+        {
+            memcpy( pptr(), __s, __n );
+            pbump( __n );
+        }
+        else
+        {
+            sync();
+            bump(pptr() - pbase());
+            xsputn(__s, __n);
+        }
+        return __n;
+    }
+
+	virtual int sync()
 	{
-		char *b = new char[__n + 1];
-		snprintf(b, __n + 1, "%s", __s);
-		printf("%s", b);
-		delete[] b;
-		return __n;
+		printf("%s", pbase());
+		return 0;
 	}
+private:
+	vector<char> _buffer;
 };
 
 int main(int argc, char **argv)
