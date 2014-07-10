@@ -26,7 +26,9 @@ add_subdirectory(algorithms)
 
 add_subdirectory(speed_tests)
 
-add_subdirectory(gui)
+if(WITH_GUI)
+    add_subdirectory(gui)
+endif()
 
 add_subdirectory(metaprogramming)
 
