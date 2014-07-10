@@ -39,7 +39,7 @@ private:
 class PrintfBuf: public streambuf
 {
 public:
-	PrintfBuf(): streambuf(), _buffer(1024)
+    PrintfBuf(): streambuf(), _buffer(1024)
 	{
         setp(&_buffer.front(), &_buffer.back() + 1);
 	}
@@ -49,8 +49,7 @@ public:
 
     virtual streamsize xsputn( const char_type* __s, streamsize __n )
     {
-        ssize_t s = epptr() - pptr();
-        if ( s >= __n )
+        if ( (epptr() - pptr()) >= __n )
         {
             memcpy( pptr(), __s, __n );
             pbump( __n );
@@ -58,7 +57,6 @@ public:
         else
         {
             sync();
-            bump(pptr() - pbase());
             xsputn(__s, __n);
         }
         return __n;
@@ -66,7 +64,12 @@ public:
 
 	virtual int sync()
 	{
-		printf("%s", pbase());
+        printf("%s", pbase());
+        pbump(-(pptr() - pbase()));
+        for(auto &b: _buffer)
+        {
+            b = 0;
+        }
 		return 0;
 	}
 private:
