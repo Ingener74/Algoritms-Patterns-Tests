@@ -13,46 +13,24 @@
 
 using namespace std;
 
-class CustomStreamBuf: public std::streambuf
+class printf_buffer: public streambuf
 {
 public:
-    CustomStreamBuf(const string& fileName)
+    printf_buffer() :
+            streambuf(), _buffer(1024)
     {
-        _file.open(fileName.c_str(), ios::out);
-    }
-    virtual ~CustomStreamBuf()
-    {
-        _file.flush();
-    }
-
-    virtual int_type
-    overflow(int_type c  = traits_type::eof())
-    {
-        _file << static_cast<char>(c);
-        return c;
-    }
-
-private:
-    fstream _file;
-};
-
-class PrintfBuf: public streambuf
-{
-public:
-    PrintfBuf(): streambuf(), _buffer(1024)
-	{
         setp(&_buffer.front(), &_buffer.back() + 1);
-	}
-	virtual ~PrintfBuf()
-	{
-	}
+    }
+    virtual ~printf_buffer()
+    {
+    }
 
     virtual streamsize xsputn( const char_type* __s, streamsize __n )
     {
         if ( (epptr() - pptr()) >= __n )
         {
-            memcpy( pptr(), __s, __n );
-            pbump( __n );
+            memcpy(pptr(), __s, __n);
+            pbump(__n);
         }
         else
         {
@@ -62,28 +40,27 @@ public:
         return __n;
     }
 
-	virtual int sync()
-	{
+    virtual int sync()
+    {
         printf("%s", pbase());
         pbump(-(pptr() - pbase()));
-        for(auto &b: _buffer)
+        for ( auto &b : _buffer )
         {
             b = 0;
         }
-		return 0;
-	}
+        return 0;
+    }
 private:
-	vector<char> _buffer;
+    vector<char> _buffer;
 };
 
-int main(int argc, char **argv)
+int main( int argc, char **argv )
 {
     try
     {
         cout << "before redirection" << endl;
 
-//        CustomStreamBuf csb("cout2custom");
-        PrintfBuf csb;
+        printf_buffer csb;
 
         streambuf* temp = cout.rdbuf();
 
@@ -93,9 +70,9 @@ int main(int argc, char **argv)
 
         cout.rdbuf(temp);
     }
-    catch (exception const & e)
+    catch ( exception const & e )
     {
-        cout << "error: " << e.what() << endl;
+        cout << "Error: " << e.what() << endl;
     }
     return 0;
 }
