@@ -37,3 +37,5 @@ add_subdirectory(custom_literals)
 add_subdirectory(system)
 
 add_subdirectory(format_class)
+
+add_subdirectory(vector_by_rule)
