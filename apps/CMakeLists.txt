@@ -39,3 +39,5 @@ add_subdirectory(system)
 add_subdirectory(format_class)
 
 add_subdirectory(vector_by_rule)
+
+add_subdirectory(initializer_list)
