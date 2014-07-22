@@ -14,6 +14,49 @@
 
 using namespace std;
 
+template<typename T, typename... Args>
+struct is_callable
+{
+	enum
+	{
+		isCallable = 0
+	};
+};
+
+template<typename T, typename... Args>
+struct is_callable<T(Args...)>
+{
+	enum
+	{
+		isCallable = 1
+	};
+};
+
+template<typename T, typename... Args>
+struct is_callable<function<T(Args...)>>
+{
+	enum
+	{
+		isCallable = 1
+	};
+};
+
+
+
+void bar()
+{
+	string	call[] {
+			"not callable",
+			"callable"
+	};
+	auto la = [](){};
+
+	cout << "void()                       is " << call[is_callable<void()>::isCallable] << endl;
+	cout << "int                          is " << call[is_callable<int>::isCallable] << endl;
+	cout << "function<void(int, double)>  is " << call[is_callable<function<void(int, double)>>::isCallable] << endl;
+	cout << "lambda is                    is " << call[is_callable<decltype(la)>::isCallable] << endl;
+}
+
 class Exception
 {
 public:
@@ -63,6 +106,8 @@ int main(int argc, char **argv)
 {
     try
     {
+    	bar();
+
         int c = 38;
 
         cout << "before test exception" << endl;
@@ -71,7 +116,12 @@ int main(int argc, char **argv)
         {
             e << "i was called in exception " << c;
         };
-        Exception() << "Test exception " << ec << (5 > 1);
+
+        Exception() << "Test exception " << ec
+			/*[&](Exception& e)
+			{
+				e << "i was called in exception " << c;
+			}*/ << (5 > 1);
 
         Exception() << "Test exception " << (5 > 1);
 
