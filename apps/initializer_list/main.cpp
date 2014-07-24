@@ -28,8 +28,7 @@ int main( int argc, char **argv )
 	{
 		cout << "initializer list" << endl;
 
-		foo1(
-		{ 1, 10, 100, 1000 } );
+		foo1( { 1, 10, 100, 1000 } );
 	}
 	catch ( exception const & e )
 	{

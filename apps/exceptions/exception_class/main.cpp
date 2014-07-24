@@ -41,8 +41,6 @@ struct is_callable<function<T(Args...)>>
 	};
 };
 
-
-
 void bar()
 {
 	string	call[] {
