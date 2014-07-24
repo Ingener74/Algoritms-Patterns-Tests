@@ -25,6 +25,7 @@ public:
     {
     }
 
+    /*
     virtual streamsize xsputn( const char_type* __s, streamsize __n )
     {
         if ( (epptr() - pptr()) >= __n )
@@ -39,6 +40,7 @@ public:
         }
         return __n;
     }
+    */
 
     virtual int sync()
     {
