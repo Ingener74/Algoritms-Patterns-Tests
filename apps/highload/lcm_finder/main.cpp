@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         cout << "lcm finder" << endl;
 
         if (argc != 2) throw std::runtime_error(""
-                "You must pass number of threads\n"
+                "You must put number of threads\n"
                 "Usage: ./lcm_finder <number-of-threads>");
 
         /*
