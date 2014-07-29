@@ -4,8 +4,6 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_subdirectory(test_boost_asio)
 
-add_subdirectory(big_alloc_test)
-
 add_subdirectory(patterns)
 
 if(WITH_JAVA)
@@ -24,7 +22,7 @@ add_subdirectory(sorts)
 
 add_subdirectory(algorithms)
 
-add_subdirectory(speed_tests)
+add_subdirectory(performance)
 
 if(WITH_GUI)
     add_subdirectory(gui)
