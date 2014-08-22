@@ -8,17 +8,17 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-using namespace boost;
 using namespace std;
+using namespace boost;
+using namespace boost::asio;
 
 int main(int argc, char **argv)
 {
-    std::cout << "test asio client" << std::endl;
+    cout << "test asio client" << endl;
 
-    asio::io_service service;
-    asio::ip::tcp::endpoint ep(asio::ip::address::from_string("127.0.0.1"),
-            2001);
-    asio::ip::tcp::socket sock(service);
+    io_service service;
+    ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 2001);
+    ip::tcp::socket sock(service);
     sock.async_connect(ep, [](const system::error_code& ec)
     {
         cout << "connnection success" << endl;

@@ -8,42 +8,42 @@
 #include <iostream>
 
 #include <boost/bind.hpp>
-#include <boost/local_function.hpp>
 #include <boost/asio.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/thread.hpp>
 
-using namespace boost;
 using namespace std;
+using namespace boost;
+using namespace boost::asio;
 
 int main(int argc, char **argv)
 {
     try
     {
-        std::cout << "test asio server" << std::endl;
+        cout << "test asio server" << endl;
 
-        asio::io_service service;
+        io_service service;
 
-        asio::ip::tcp::endpoint endp(asio::ip::tcp::v4(), 2001);
+        ip::tcp::endpoint endp(ip::tcp::v4(), 2001);
 
-        asio::ip::tcp::acceptor acc(service, endp);
+        ip::tcp::acceptor acc(service, endp);
 
         while (true)
         {
-            auto sock = make_shared<asio::ip::tcp::socket>(service);
+            auto sock = make_shared<ip::tcp::socket>(service);
             acc.accept(*sock);
 
-            auto th = thread([sock](boost::shared_ptr<asio::ip::tcp::socket> sock)
+            auto th = thread([](boost::shared_ptr<ip::tcp::socket> sock)
             {
                 try
                 {
                     while (true)
                     {
                         char data[512];
-                        size_t len = sock->read_some(asio::buffer(data));
+                        size_t len = sock->read_some(buffer(data));
                         if (len > 0)
                         {
-                            write(*sock, asio::buffer("ok", 2));
+                            write(*sock, buffer("ok", 2));
                         }
                     }
                 }
@@ -53,8 +53,7 @@ int main(int argc, char **argv)
                 }
             }, sock);
         }
-    }
-    catch (const std::exception& e)
+    } catch (const std::exception& e)
     {
         cout << "error: " << e.what() << endl;
     }
