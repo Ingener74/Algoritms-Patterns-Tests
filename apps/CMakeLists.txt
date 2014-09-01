@@ -41,3 +41,5 @@ add_subdirectory(vector_by_rule)
 add_subdirectory(initializer_list)
 
 add_subdirectory(check_valid)
+
+add_subdirectory(pretty_typeid)
