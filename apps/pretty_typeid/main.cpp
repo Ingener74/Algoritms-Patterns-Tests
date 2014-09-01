@@ -16,6 +16,16 @@
 
 using namespace std;
 
+template<typename T>
+string typeName(const T& obj)
+{
+    int status;
+    char *realname = abi::__cxa_demangle(typeid(obj).name(), 0, 0, &status);
+    string res(realname);
+    free(realname);
+    return res;
+}
+
 int main(int argc, char **argv)
 {
     try
@@ -35,12 +45,9 @@ int main(int argc, char **argv)
 
         cout << "test name " << typeid(t).name() << endl;
 
-        int status;
-        char *realname = abi::__cxa_demangle(typeid(t).name(), 0, 0, &status);
-        std::cout << "real test name " << realname << endl;
-        free(realname);
-
-    } catch (exception const & e)
+        cout << "real test name " << typeName(t) << endl;
+    }
+    catch (exception const & e)
     {
         cerr << "Error: " << e.what() << endl;
     }
