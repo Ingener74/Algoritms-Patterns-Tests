@@ -10,50 +10,9 @@
 #include <sstream>
 #include <list>
 #include <functional>
-#include <binders.h>
+#include <type_traits>
 
 using namespace std;
-
-template<typename T, typename... Args>
-struct is_callable
-{
-	enum
-	{
-		isCallable = 0
-	};
-};
-
-template<typename T, typename... Args>
-struct is_callable<T(Args...)>
-{
-	enum
-	{
-		isCallable = 1
-	};
-};
-
-template<typename T, typename... Args>
-struct is_callable<function<T(Args...)>>
-{
-	enum
-	{
-		isCallable = 1
-	};
-};
-
-void bar()
-{
-	string	call[] {
-			"not callable",
-			"callable"
-	};
-	auto la = [](){};
-
-	cout << "void()                       is " << call[is_callable<void()>::isCallable] << endl;
-	cout << "int                          is " << call[is_callable<int>::isCallable] << endl;
-	cout << "function<void(int, double)>  is " << call[is_callable<function<void(int, double)>>::isCallable] << endl;
-	cout << "lambda is                    is " << call[is_callable<decltype(la)>::isCallable] << endl;
-}
 
 class Exception
 {
@@ -65,63 +24,71 @@ public:
     }
     virtual ~Exception()
     {
-    }
-
-    Exception& operator<<(ExceptionCallback ec)
-    {
-        _cb.push_back(ec);
-        return *this;
+        cout << this << ":" << _.str() << endl;
     }
 
     template<typename T>
-    Exception& operator<<(const T& other)
+    Exception& operator<<(T other)
     {
-        _ << other;
-        return *this;
-    }
-
-    Exception& operator<<(bool exceptionCondition)
-    {
-        if (exceptionCondition)
-        {
-            for (auto &cb : _cb)
-                cb(*this);
-            throw runtime_error(_.str());
-        }
+        foo(other);
         return *this;
     }
 
 private:
+    template<typename T>
+    void foo(T&& t, typename enable_if<is_same<decltype(t(declval<Exception>())), void>::value>::type* = nullptr)
+    {
+        _cb.push_back(t);
+    }
+
+    template<typename T>
+    void foo(T t, typename enable_if<is_same<bool, T>::value>::type* = nullptr)
+    {
+        if (t)
+        {
+            for (auto cb : _cb)
+                cb(*this);
+            throw runtime_error(_.str());
+        }
+    }
+
+    template<typename T>
+    void foo(T t, typename enable_if<!is_same<bool, T>::value>::type* = nullptr)
+    {
+        _ << t;
+    }
+
     stringstream _;
     list<ExceptionCallback> _cb;
 };
 
-void foo(Exception& e){
-    e << "foo " << 48;
+template<typename T>
+void bar(T&& t)
+{
+    cout << boolalpha <<
+
+            is_same<decltype(declval<T>()(declval<Exception>())), void>::value
+
+    << noboolalpha << endl;
 }
 
 int main(int argc, char **argv)
 {
     try
     {
-    	bar();
+//        bar([](Exception&& e){});
 
         int c = 38;
 
         cout << "before test exception" << endl;
 
-        Exception::ExceptionCallback ec = [&](Exception& e)
-        {
-            e << "i was called in exception " << c;
-        };
+//        Exception() << "Test exception 1" << [&](Exception&& e)
+//        {
+//            e << "i was called in exception " << c;
+//        } << (5 > 1);
 
-        Exception() << "Test exception " << ec
-			/*[&](Exception& e)
-			{
-				e << "i was called in exception " << c;
-			}*/ << (5 > 1);
-
-        Exception() << "Test exception " << (5 > 1);
+        Exception() << "Test exception 2" << true;
+//        Exception() << "Test exception 3" << (5 > 1);
 
         cout << "after test exception" << endl;
     }
