@@ -53,6 +53,12 @@ private:
     }
 
     template<typename T>
+    struct has_function_operator{
+        static constexpr bool value = true;
+    };
+
+    // operator() not exist
+    template<typename T>
     void foo(T t, typename enable_if<!is_same<bool, T>::value>::type* = nullptr)
     {
         _ << t;
