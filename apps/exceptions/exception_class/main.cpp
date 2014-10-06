@@ -14,6 +14,18 @@
 
 using namespace std;
 
+//template<typename T>
+//struct has_call_op
+//{
+//    template<typename>
+//    false_type detect(...);
+//
+//    template<typename U>
+//    decltype(declval<U>()()) detect(const U&);
+//
+//    static constexpr bool value = ! is_same<false_type, decltype(detect(declval<T>()))>::value;
+//};
+
 class Exception
 {
 public:
@@ -52,11 +64,6 @@ private:
         }
     }
 
-    template<typename T>
-    struct has_function_operator{
-        static constexpr bool value = true;
-    };
-
     // operator() not exist
     template<typename T>
     void foo(T t, typename enable_if<!is_same<bool, T>::value>::type* = nullptr)
@@ -71,18 +78,20 @@ private:
 template<typename T>
 void bar(T&& t)
 {
-    cout << boolalpha <<
+    cout << boolalpha;
 
-            is_same<decltype(declval<T>()(declval<Exception>())), void>::value
+    cout << is_same<decltype(declval<T>()(declval<Exception>())), void>::value << endl;
 
-    << noboolalpha << endl;
+//    cout << has_call_op<T>::value << endl;
+
+    cout << noboolalpha;
 }
 
 int main(int argc, char **argv)
 {
     try
     {
-//        bar([](Exception&& e){});
+        bar([](Exception&& e){});
 
         int c = 38;
 

@@ -43,3 +43,5 @@ add_subdirectory(initializer_list)
 add_subdirectory(check_valid)
 
 add_subdirectory(pretty_typeid)
+
+add_subdirectory(multi_settings)
