@@ -17,20 +17,14 @@ using namespace std;
 
 namespace pt = boost::property_tree;
 
-//template<typename T, typename A>
-//auto get(const pt::ptree& p, const string& name, T& t) -> decltype(declval<T>()(declval<A>()), void(), int())// if t can be called
-//{
-//    t(p.get<A>(name));
-//}
-
 template<typename T>
-auto get(const pt::ptree& p, const string& name, T& t) -> decltype(t.foo(p.get<int>(name)), void(), void())
+auto get(const pt::ptree& p, const string& name, T& t) -> decltype(t.foo(p.get<int>(name)), void())
 {
     t.foo(p.get<int>(name));
 }
 
 template<typename T>
-auto get(const pt::ptree& p, const string& name, T& t) -> decltype(t = p.get<T>(name), void(), void())
+auto get(const pt::ptree& p, const string& name, T& t) -> decltype(t = p.get<T>(name), void())
 {
     t = p.get<T>(name);
 }
