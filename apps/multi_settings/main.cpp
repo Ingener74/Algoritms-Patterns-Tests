@@ -8,6 +8,7 @@
 #include <iostream>
 #include <tuple>
 #include <utility>
+#include <type_traits>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -15,38 +16,21 @@
 using namespace std;
 
 namespace pt = boost::property_tree;
-/*
+
+//template<typename T, typename A>
+//auto get(const pt::ptree& p, const string& name, T& t) -> decltype(declval<T>()(declval<A>()), void(), int())// if t can be called
+//{
+//    t(p.get<A>(name));
+//}
 
 template<typename T>
-void get(const pt::ptree &p, tuple<pair<string, T>>& t)
+auto get(const pt::ptree& p, const string& name, T& t, bool) -> decltype(t.foo(0), int(0))
 {
-    get<0>(t).second = p.get<T>(get<0>(t).first);
+    t(p.get<int>(name));
 }
-
-template<typename T, typename... Args>
-void get(const pt::ptree &p, tuple<pair<string, T>, pair<string, Args>...>& t)
-{
-    get(p.);
-}
-*/
-
-/*
-template<typename T>
-void get(const pt::ptree& p, pair<string, T> t)
-{
-    t.second = p.get<T>(t.first);
-}
-
-template<typename T, typename ... Args>
-void get(const pt::ptree& p, pair<string, T> t, pair<string, T> ... args)
-{
-    t.second = p.get<T>(t.first);
-    get(t, args);
-}
-*/
 
 template<typename T>
-void get(const pt::ptree& p, const string& name, T& t)
+auto get(const pt::ptree& p, const string& name, T& t, int) -> int
 {
     t = p.get<T>(name);
 }
@@ -54,29 +38,59 @@ void get(const pt::ptree& p, const string& name, T& t)
 template<typename T, typename ... Args>
 void get(const pt::ptree& p, const string& name, T& t, Args&... args)
 {
-    t = p.get<T>(name);
+    get(p, name, t, true);
     get(p, args...);
 }
+
+void foo(int i)
+{
+    cout << "i " << i << endl;
+}
+
+class foo1{
+public:
+    void operator()(){
+    }
+
+    void foo(int i){
+        cout << "foo1::foo " << i << endl;
+    }
+};
 
 int main(int argc, char **argv)
 {
     try
     {
-        cout << "" << endl;
+        foo1 f;
+//
+//        cout << boolalpha << endl;
+//        cout << "f1 is callable: " << is_callable<foo1>::value << endl;
+//
+//        auto f2 = bind(&foo1::foo, &f);
+//
+//        cout << "f2 is callable: " << is_callable<decltype(bind(&foo1::foo, &f))>::value << endl;
+//
+//        auto f3 = [](){};
+//
+//        cout << "f3 is callable: " << is_callable<decltype(f3)>::value << endl;
+//
+//        cout << "" << is_callable<int>::value << endl;
+//        cout << "" << is_callable<float>::value << endl;
+//
+//        cout << "" << endl;
 
         pt::ptree p;
 
         pt::read_json("test_config.json", p);
 
-//        assert(100 == p.get<int>("test_int"));
-//        assert("pahan" == p.get<string>("test_string"));
-//        assert(p.get<bool>("test_bool"));
-
         int i = 0;
         string s;
         bool b = false;
 
-        get(p, "test_int", i, "test_string", s, "test_bool", b);
+//        get(p, "test_int", i, "test_string", s, "test_bool", b);
+//        get(p, "test_bind", bind(foo, placeholders::_1));
+//        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
+        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", f);
 
         cout << i << " " << s << " " << b << endl;
 

@@ -1,5 +1,6 @@
 {
     "test_int" : 100,
     "test_string" : "pahan",
-    "test_bool" : true
+    "test_bool" : true,
+    "test_bind" : 200
 }
