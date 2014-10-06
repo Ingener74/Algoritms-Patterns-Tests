@@ -24,13 +24,13 @@ namespace pt = boost::property_tree;
 //}
 
 template<typename T>
-auto get(const pt::ptree& p, const string& name, T& t, bool) -> decltype(t.foo(0), int(0))
+auto get(const pt::ptree& p, const string& name, T& t) -> decltype(t.foo(p.get<int>(name)), void(), void())
 {
-    t(p.get<int>(name));
+    t.foo(p.get<int>(name));
 }
 
 template<typename T>
-auto get(const pt::ptree& p, const string& name, T& t, int) -> int
+auto get(const pt::ptree& p, const string& name, T& t) -> decltype(t = p.get<T>(name), void(), void())
 {
     t = p.get<T>(name);
 }
@@ -38,7 +38,7 @@ auto get(const pt::ptree& p, const string& name, T& t, int) -> int
 template<typename T, typename ... Args>
 void get(const pt::ptree& p, const string& name, T& t, Args&... args)
 {
-    get(p, name, t, true);
+    get(p, name, t);
     get(p, args...);
 }
 
@@ -49,8 +49,11 @@ void foo(int i)
 
 class foo1{
 public:
-    void operator()(){
+    foo1(){
     }
+
+    foo1(const foo1&) = delete;
+    foo1& operator=(const foo1&) = delete;
 
     void foo(int i){
         cout << "foo1::foo " << i << endl;
@@ -87,7 +90,7 @@ int main(int argc, char **argv)
         string s;
         bool b = false;
 
-//        get(p, "test_int", i, "test_string", s, "test_bool", b);
+        get(p, "test_int", i, "test_string", s, "test_bool", b);
 //        get(p, "test_bind", bind(foo, placeholders::_1));
 //        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
         get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", f);
