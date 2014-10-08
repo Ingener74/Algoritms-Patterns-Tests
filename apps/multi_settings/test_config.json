@@ -2,5 +2,6 @@
     "test_int" : 100,
     "test_string" : "pahan",
     "test_bool" : true,
-    "test_bind" : 200
+    "test_bind" : 200,
+    "test_bind_string": "bind me"
 }
