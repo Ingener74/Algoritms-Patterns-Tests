@@ -16,6 +16,10 @@
 using namespace std;
 namespace pt = boost::property_tree;
 
+/*
+ * functor getter with any type
+ */
+
 template<typename P, typename T>
 auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<int>(name)), void())
 {
@@ -25,7 +29,8 @@ auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<int>(n
 template<typename P, typename T>
 auto get(P&& p, const string& name, T&& t) -> decltype(t = p.get<T>(name), void())
 {
-    t = p.get<T>(name);
+    using rfT = typename remove_reference<T>::type;
+    t = p.get<rfT>(name);
 }
 
 template<typename P, typename T, typename ... Args>
@@ -34,25 +39,6 @@ void get(P&& p, const string& name, T&& t, Args&&... args)
     get(p, name, t);
     get(p, args...);
 }
-
-class ptree_holder
-{
-    pt::ptree _p;
-public:
-    ptree_holder(pt::ptree p): _p(p){
-    }
-    virtual ~ptree_holder() = default;
-
-    template<typename T>
-    typename remove_reference<T>::type get(const string& name)
-    {
-        using rfT = typename remove_reference<T>::type;
-
-        rfT t = _p.get<rfT>(name);
-
-        return t;
-    }
-};
 
 void foo(int i)
 {
@@ -79,19 +65,16 @@ int main(int argc, char **argv)
         bar f;
 
         pt::ptree p;
-
         pt::read_json("test_config.json", p);
 
         int i = 0;
         string s;
         bool b = false;
 
-        ptree_holder pth(p);
-
-        get(pth, "test_int", i, "test_string", s, "test_bool", b);
-        get(pth, "test_int", i, "test_string", s, "test_bool", b, "test_bind", f);
-        get(pth, "test_int", i, "test_string", s, "test_bool", b, "test_bind", [](int i){ cout << "test_bind with lambda " << i << endl; });
-        get(pth, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
+        get(p, "test_int", i, "test_string", s, "test_bool", b);
+        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", f);
+        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", [](int i){ cout << "test_bind with lambda " << i << endl; });
+        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
 
         cout << i << " " << s << " " << b << endl;
 
