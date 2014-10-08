@@ -32,6 +32,12 @@ auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<string
     t(p.get<string>(name));
 }
 
+//template<typename P, typename T>
+//auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<bool>(name)), void())
+//{
+//    t(p.get<bool>(name));
+//}
+
 template<typename P, typename T>
 auto get(P&& p, const string& name, T&& t) -> decltype(t = p.get<T>(name), void())
 {
@@ -67,6 +73,10 @@ void baz(string s){
     cout << "test_bind_string " << s << endl;
 }
 
+void quz(bool b){
+    cout << "test bind bool " << b << endl;
+}
+
 int main(int argc, char **argv)
 {
     try
@@ -85,6 +95,7 @@ int main(int argc, char **argv)
         get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", [](int i){ cout << "test_bind with lambda " << i << endl; });
         get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
         get(p, "test_bind_string", bind(baz, placeholders::_1));
+//        get(p, "test_bind_bool", bind(quz, placeholders::_1));
 
         cout << i << " " << s << " " << b << endl;
 

@@ -3,5 +3,6 @@
     "test_string" : "pahan",
     "test_bool" : true,
     "test_bind" : 200,
-    "test_bind_string": "bind me"
+    "test_bind_string": "bind me",
+    "test_bind_bool": true
 }
