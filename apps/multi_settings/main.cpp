@@ -12,9 +12,10 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/type_traits.hpp>
+
 
 using namespace std;
-namespace pt = boost::property_tree;
 
 /*
  * functor setter with deduce argument type
@@ -33,9 +34,9 @@ auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<string
 }
 
 //template<typename P, typename T>
-//auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<bool>(name)), void())
+//auto get(P&& p, const string& name, T&& t) -> decltype(t.operator()(p.get<boost::function_traits<T>::arg1_type>(name)), void())
 //{
-//    t(p.get<bool>(name));
+//    t(p.get<boost::function_traits<T>::arg1_type>(name));
 //}
 
 template<typename P, typename T>
@@ -77,25 +78,44 @@ void quz(bool b){
     cout << "test bind bool " << b << endl;
 }
 
+template<typename F>
+void quuz(F&& f)
+{
+    typename boost::function_traits<decltype(f)>::arg1_type t;
+
+    cout << "quuz " << typeid(decltype(f)).name() << endl;
+    cout << "quuz " << typeid(t).name() << endl;
+}
+
 int main(int argc, char **argv)
 {
     try
     {
+        boost::function_traits<void(int)>::arg1_type t;
+        quuz(baz);
+        quuz(quz);
+        quuz(foo);
+//        quuz(bind(baz, placeholders::_1));
+
         bar f;
 
-        pt::ptree p;
-        pt::read_json("test_config.json", p);
+        boost::property_tree::ptree p;
+        boost::property_tree::read_json("test_config.json", p);
 
         int i = 0;
         string s;
         bool b = false;
 
+//        get(p, "test_int", i, "test_string", s, "test_bool", b);
+//        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", f);
+//        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", [](int i){ cout << "test_bind with lambda " << i << endl; });
+//        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
+//        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
+//        get(p, "test_bind_string", bind(baz, placeholders::_1));
+////        get(p, "test_bind_bool", bind(quz, placeholders::_1));
+
         get(p, "test_int", i, "test_string", s, "test_bool", b);
-        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", f);
-        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", [](int i){ cout << "test_bind with lambda " << i << endl; });
-        get(p, "test_int", i, "test_string", s, "test_bool", b, "test_bind", bind(foo, placeholders::_1));
-        get(p, "test_bind_string", bind(baz, placeholders::_1));
-//        get(p, "test_bind_bool", bind(quz, placeholders::_1));
+        get(p, "test_bind", bind(foo, placeholders::_1));
 
         cout << i << " " << s << " " << b << endl;
 
