@@ -1,8 +1,8 @@
 {
-    "test_int" : 100,
-    "test_string" : "pahan",
+    "test_int" : 42,
+    "test_string" : "foo",
     "test_bool" : true,
-    "test_bind" : 200,
-    "test_bind_string": "bind me",
+    "test_bind" : 23,
+    "test_bind_string": "bar",
     "test_bind_bool": true
 }

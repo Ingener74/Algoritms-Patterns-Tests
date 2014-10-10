@@ -14,6 +14,9 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/type_traits.hpp>
 
+#include <boost/function_types/parameter_types.hpp>
+#include <boost/mpl/at.hpp>
+#include <boost/mpl/int.hpp>
 
 using namespace std;
 
@@ -81,21 +84,39 @@ void quz(bool b){
 template<typename F>
 void quuz(F&& f)
 {
-    typename boost::function_traits<decltype(f)>::arg1_type t;
+//    using lam_type = decltype(f);
+//    using lam_args = boost::function_types::parameter_types<decltype(&lam_type::operator())>::type;
+//    using lam_arg1 = boost::mpl::at<lam_args, boost::mpl::int_<1>>::type;
 
-    cout << "quuz " << typeid(decltype(f)).name() << endl;
-    cout << "quuz " << typeid(t).name() << endl;
+    cout << __PRETTY_FUNCTION__ << endl;
 }
 
 int main(int argc, char **argv)
 {
     try
     {
-        boost::function_traits<void(int)>::arg1_type t;
-        quuz(baz);
-        quuz(quz);
-        quuz(foo);
+//        boost::function_traits<void(int)>::arg1_type t;
+//        quuz(baz);
+//        quuz(quz);
+//        quuz(foo);
+
+//        quuz(&bar::operator());
+
+//        boost::function_traits<&foo_type::operator()>::arg1_type t1;
 //        quuz(bind(baz, placeholders::_1));
+
+        auto lambda1 = [](string s){};
+
+        quuz(lambda1);
+
+        using lam_type = decltype(lambda1);
+
+        using lam_args = boost::function_types::parameter_types<decltype(&lam_type::operator())>::type;
+
+        using lam_arg1 = boost::mpl::at<lam_args, boost::mpl::int_<1>>::type;
+
+        lam_arg1 la1 = "";
+
 
         bar f;
 
@@ -119,8 +140,8 @@ int main(int argc, char **argv)
 
         cout << i << " " << s << " " << b << endl;
 
-        assert(100 == i);
-        assert("pahan" == s);
+        assert(42 == i);
+        assert("foo" == s);
         assert(b);
 
         cout << "successful" << endl;

@@ -14,18 +14,6 @@
 
 using namespace std;
 
-//template<typename T>
-//struct has_call_op
-//{
-//    template<typename>
-//    false_type detect(...);
-//
-//    template<typename U>
-//    decltype(declval<U>()()) detect(const U&);
-//
-//    static constexpr bool value = ! is_same<false_type, decltype(detect(declval<T>()))>::value;
-//};
-
 class Exception
 {
 public:
