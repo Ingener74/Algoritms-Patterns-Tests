@@ -20,6 +20,72 @@
 
 using namespace std;
 
+//  auto stringify(const T& t, bool) const ->decltype(std::declval<std::ostream>() << t, void(), std::string{})
+//  {
+//      std::stringstream ss;
+//      ss << t;
+//      return ss.str();
+//  }
+//  auto stringify(const T& t, int) const -> std::string
+//  {
+//      return "RemoteProperty";
+//  }
+
+//template<typename P>
+//struct can_ostream{
+//
+//    static std::ostream o; // std::declval<std::ostream>()
+//
+//    template<typename U>
+//    auto deduce(const U& u) -> decltype(o << u, void(), std::true_type{});
+//
+//    template<typename>
+//    auto deduce(...) -> std::false_type;
+//
+//    static constexpr bool value = (deduce(std::declval<P>()) == std::true_type{});
+//};
+//
+//template<typename A, typename std::enable_if<can_ostream<T>::value>::type* = nullptr>
+//std::string stringify(const A& t)
+//{
+//    std::stringstream ss;
+//    ss << t;
+//    return ss.str();
+//}
+//template<typename A, typename std::enable_if<!can_ostream<T>::value>::type* = nullptr>
+//std::string stringify(const A& t)
+//{
+//    return "RemoteProperty";
+//}
+//
+//friend std::ostream& operator<<(std::ostream& out, const RemoteProperty<T>& rho){
+//    out << rho.stringify(rho._getter(), true);
+//    return out;
+//}
+
+/*
+std::string foo;
+
+auto rp = RemoteProperty<std::string>{[&foo](std::string s){ foo = s; }, [&foo](){ return foo; }};
+
+rp = "Test";
+
+std::string testString = rp;
+
+std::cout << rp << std::endl;
+
+class Test{
+public:
+    Test(){}
+    virtual ~Test(){}
+};
+
+Test t;
+
+auto rp2 = RemoteProperty<Test>{[&t](const Test& bar){ t = bar; }, [&t](){ return t; }};
+std::cout << rp2 << std::endl;
+*/
+
 /*
  * functor setter with deduce argument type
  */
@@ -81,42 +147,15 @@ void quz(bool b){
     cout << "test bind bool " << b << endl;
 }
 
-template<typename F>
-void quuz(F&& f)
-{
-//    using lam_type = decltype(f);
-//    using lam_args = boost::function_types::parameter_types<decltype(&lam_type::operator())>::type;
-//    using lam_arg1 = boost::mpl::at<lam_args, boost::mpl::int_<1>>::type;
-
-    cout << __PRETTY_FUNCTION__ << endl;
+string quuuz(){
+    return "";
 }
 
 int main(int argc, char **argv)
 {
     try
     {
-//        boost::function_traits<void(int)>::arg1_type t;
-//        quuz(baz);
-//        quuz(quz);
-//        quuz(foo);
-
-//        quuz(&bar::operator());
-
-//        boost::function_traits<&foo_type::operator()>::arg1_type t1;
-//        quuz(bind(baz, placeholders::_1));
-
-        auto lambda1 = [](string s){};
-
-        quuz(lambda1);
-
-        using lam_type = decltype(lambda1);
-
-        using lam_args = boost::function_types::parameter_types<decltype(&lam_type::operator())>::type;
-
-        using lam_arg1 = boost::mpl::at<lam_args, boost::mpl::int_<1>>::type;
-
-        lam_arg1 la1 = "";
-
+        typename result_of<decltype(&quuuz)()>::type t3;
 
         bar f;
 
