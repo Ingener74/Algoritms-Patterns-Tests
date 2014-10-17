@@ -24,21 +24,6 @@ using namespace std;
 //    return "RemoteProperty";
 //}
 
-//template<typename P>
-//struct can_ostream
-//{
-//
-//    static std::ostream o; // std::declval<std::ostream>()
-//
-//    template<typename U>
-//    auto deduce(const U& u) -> decltype(o << u, void(), std::true_type{});
-//
-//    template<typename >
-//    auto deduce(...) -> std::false_type;
-//
-//    static constexpr bool value = (deduce(std::declval<P>()) == std::true_type{});
-//};
-
 //template<typename A, typename std::enable_if<can_ostream<T>::value>::type* = nullptr>
 //std::string stringify(const A& t)
 //{
@@ -64,6 +49,21 @@ class RemoteVariable
     Getter _g;
     Setter _s;
 
+
+    template<typename P>
+    struct can_ostream
+    {
+        // static std::ostream o; // std::declval<std::ostream>()
+
+        template<typename U>
+        auto deduce(const U& u) -> decltype(std::declval<std::ostream>() << u, void(), std::true_type{});
+
+        template<typename >
+        auto deduce(...) -> std::false_type;
+
+        static constexpr bool value = (deduce(std::declval<P>()) == std::true_type{});
+    };
+
     string stringify_impl(const T& t, true_type)
     {
         stringstream ss;
@@ -75,9 +75,9 @@ class RemoteVariable
         return "RemoveVariable";
     }
 
-    auto stringify(const T& t) -> decltype(stringify_impl(t, ))
+    auto stringify(const T& t) -> decltype(stringify_impl(t, result_of<>::type))
     {
-        return "RemoveVariable";
+        return stringify_impl(...);
     }
 
 public:
