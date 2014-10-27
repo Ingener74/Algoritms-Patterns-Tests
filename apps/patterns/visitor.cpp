@@ -9,7 +9,8 @@
 
 using namespace std;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     try
     {
         cout << "visitor example" << endl;
@@ -22,6 +23,4 @@ int main(int argc, char **argv) {
         return 1;
     }
 }
-
-
 
