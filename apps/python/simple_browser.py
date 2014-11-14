@@ -10,6 +10,7 @@ def main():
     
     web = QWebView()
     web.load('http://www.google.ru')
+#     web.load('test.html')
     web.show()
     
     sys.exit(app.exec_())
