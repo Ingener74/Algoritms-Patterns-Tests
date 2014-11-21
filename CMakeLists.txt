@@ -5,6 +5,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modu
 option(WITH_JAVA "Compile Java parts" OFF)
 option(WITH_GUI  "Compile GUI parts(Qt/FLTK)" OFF)
 
+# find boost
+set(Boost_USE_STATIC_LIBS    ON)
+set(Boost_USE_MULTITHREADED  ON)
+if(MINGW)
+    set(Boost_COMPILER -mgw48)
+else(MINGW)
+    set(Boost_COMPILER -gcc)
+endif(MINGW)
 find_package(Boost 1.53.0 REQUIRED system thread)
 
 if(WITH_GUI)

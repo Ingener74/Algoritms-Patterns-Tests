@@ -9,6 +9,6 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
-    boost_system
+    ${Boost_LIBRARIES} 
     )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
