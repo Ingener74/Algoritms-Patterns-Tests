@@ -29,7 +29,7 @@ def main():
 
     # con1.commit()
 
-    cur1.execute('''SELECT * FROM test_table''')
+    cur1.execute('''SELECT * FROM peoples''')
 
     print ''
     for i in cur1:

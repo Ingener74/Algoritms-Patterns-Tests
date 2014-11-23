@@ -55,10 +55,17 @@ auto vector_by_rule( F&& rule, const vector<Args>&... vpp ) -> vector<decltype(r
 	return result;
 }
 
+
+string operator"" _str(const char* data, size_t size){
+    return string(data);
+}
+
 int main( int argc, char **argv )
 {
     try
     {
+        auto str1 = "bla bla"_str;
+
         vector<string> test1 {
             "New York",
             "Moscow",
@@ -95,6 +102,11 @@ int main( int argc, char **argv )
 		{
 			cout << i << endl;
 		}
+
+        for(auto i: vector_by_rule([](const string& planet, double size){ return make_pair(planet, size); }, vector<string>{"Mercury", "Venus", "Earth", "Mars", "Jupiter"}, vector<double>{0.3, 0.98, 1.0, 0.5, 11.0})){
+            cout << i.first << ", " << i.second << endl;
+        }
+
     }
     catch ( std::exception const & e )
     {
