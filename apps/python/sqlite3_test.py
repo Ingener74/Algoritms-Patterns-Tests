@@ -5,35 +5,70 @@ __author__ = 'Pavel'
 
 import sqlite3
 
-def main():
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from sqlalchemy.ext.declarative import *
 
-    db_connection = sqlite3.connect("test.sqlite3")
+Base = declarative_base()
 
-    db_cursor = db_connection.cursor()
+class Department(Base):
+    __tablename__ = 'department'
+    id = Column(Integer, primary_key=True)
+    name  = Column(String)
 
-    db_cursor.execute('''SELECT * FROM peoples''')
+class Employee(Base):
+    __tablename__ = 'employee'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
 
-    print ''
-    for i in db_cursor:
-        for j in i:
-            print j
+    hired_on = Column(DateTime, default=func.now())
+    department_id = Column(Integer, ForeignKey('department.id'))
 
-    db_cursor.execute('''SELECT * FROM body_mass''')
+    department = relationship(Department, backref('employees', uselist=True, cascade='delete,all'))
 
-    print ''
-    for i in db_cursor:
-        for j in i:
-            print j
+from sqlalchemy import create_engine
+engine = create_engine('sqlite:///orm_in_detail.sqlite3')
 
-    print ''
-    print 'close connection'
+from sqlalchemy.orm import sessionmaker
 
-    db_cursor.close()
+session = sessionmaker()
 
-    print "connect successful"
+session.configure(bind=engine)
 
-if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print str(e)
+Base.metadata.create_all(engine)
+
+# def main():
+#
+#     db_connection = sqlite3.connect("test.sqlite3")
+#
+#     db_cursor = db_connection.cursor()
+#
+#     db_cursor.execute('''SELECT * FROM peoples''')
+#
+#     print ''
+#     for i in db_cursor:
+#         for j in i:
+#             print j
+#
+#     db_cursor.execute('''SELECT * FROM body_mass''')
+#
+#     print ''
+#     for i in db_cursor:
+#         for j in i:
+#             print j
+#
+#     print ''
+#     print 'close connection'
+#
+#     db_cursor.close()
+#
+#     print "connect successful"
+#
+# def main():
+#
+#
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except Exception as e:
+#         print str(e)
