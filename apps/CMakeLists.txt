@@ -45,3 +45,5 @@ add_subdirectory(check_valid)
 add_subdirectory(pretty_typeid)
 
 add_subdirectory(classes)
+
+add_subdirectory(methods_ref_qualifiers)

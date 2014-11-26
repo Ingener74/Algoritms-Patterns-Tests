@@ -1,0 +1,3 @@
+cmake_minimum_required(VERSION 2.8)
+
+add_executable(methods_ref_qualifiers methods_ref_qualifiers.cpp)
