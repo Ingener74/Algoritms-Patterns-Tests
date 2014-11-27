@@ -47,3 +47,5 @@ add_subdirectory(pretty_typeid)
 add_subdirectory(classes)
 
 add_subdirectory(methods_ref_qualifiers)
+
+add_subdirectory(automatic_exception_deduction)

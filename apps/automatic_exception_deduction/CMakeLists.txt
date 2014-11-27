@@ -1,0 +1,3 @@
+cmake_minimum_required(VERSION 2.8)
+
+add_executable(automatic_exception_deduction automatic_exception_deduction.cpp)
