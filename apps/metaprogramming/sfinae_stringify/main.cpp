@@ -10,6 +10,7 @@
 #include <utility>
 #include <type_traits>
 #include <functional>
+#include <sstream>
 
 using namespace std;
 
