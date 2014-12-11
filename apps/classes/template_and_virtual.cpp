@@ -23,7 +23,7 @@ public:
     {
     }
 
-    virtual void test() = 0;
+    virtual void test(T t) = 0;
 
 private:
     T* t = nullptr;
@@ -42,7 +42,7 @@ public:
     {
     }
 
-    virtual void test()
+    virtual void test(int)
     {
     }
 

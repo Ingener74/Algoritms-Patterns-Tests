@@ -151,6 +151,17 @@ string quuuz(){
     return "";
 }
 
+template<typename T>
+void quuuuz(T t)
+{
+    auto t1 = [](int){};
+//    cout << boost::function_traits<decltype(&decltype(t1)::operator())>::arity << endl;
+
+    cout << typeid(decltype(t1)).name() << endl;
+
+    t(1);
+}
+
 int main(int argc, char **argv)
 {
     try
@@ -182,6 +193,14 @@ int main(int argc, char **argv)
         assert(42 == i);
         assert("foo" == s);
         assert(b);
+
+        quuuuz(
+          quz
+//        [](int i)
+//        {
+//            cout << i << endl;
+//        }
+        );
 
         cout << "successful" << endl;
     }
