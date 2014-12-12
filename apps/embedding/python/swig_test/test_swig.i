@@ -1,8 +1,7 @@
 
 %module swig_me
 %{
-    extern void swig_me();
+    #include <swig_test.h>
 %}
 
-extern void swig_me();
-
+%include <swig_test.h>
