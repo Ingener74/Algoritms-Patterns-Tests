@@ -4,6 +4,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modu
 
 option(WITH_JAVA "Compile Java parts" OFF)
 option(WITH_GUI  "Compile GUI parts(Qt/FLTK)" OFF)
+option(WITH_SWIG "Compile python test wrapper" OFF)
 
 # find boost
 set(Boost_USE_STATIC_LIBS    ON)
@@ -41,6 +42,17 @@ endif()
 find_package(Lua)
 if(LUA_FOUND)
     include_directories(${LUA_INCLUDE_DIR})
+endif()
+
+
+if(WITH_SWIG)
+    find_package(SWIG)
+    include(${SWIG_USE_FILE})
+    
+    if(SWIG_FOUND)
+        include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+        set(CMAKE_SWIG_FLAGS "")
+    endif()
 endif()
 
 add_definitions(-std=c++11)
