@@ -11,10 +11,21 @@
 
 using namespace std;
 
-Image::Image(int width, int height) :
-        width(width), height(height), buffer(width * height)
+Image::Image(int type, int width, int height) :
+        type(type), width(width), height(height), buffer(type * width * height)
 {
-    std::cout << __PRETTY_FUNCTION__ << " " << width << " " << height << " " << buffer.size() << std::endl;
+    std::cout << __PRETTY_FUNCTION__ << " " << type << " " << width << " " << height << " " << buffer.size() << std::endl;
+
+    auto ptr = buffer.data();
+    for (int i = 0; i < height; ++i)
+    {
+        for (int j = 0; j < width; ++j, ptr += type)
+        {
+            ptr[0] = 1;
+            ptr[1] = 255;
+            ptr[2] = 1;
+        }
+    }
 }
 
 Image::~Image()
@@ -22,8 +33,9 @@ Image::~Image()
     std::cout << __PRETTY_FUNCTION__ << " " << width << " " << height << " " << buffer.size() << std::endl;
 }
 
-const uint8_t* Image::getData() const
+const char* Image::getData() const
 {
+    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
     return buffer.data();
 }
 
@@ -35,6 +47,11 @@ int Image::getWidth() const
 int Image::getHeight() const
 {
     return height;
+}
+
+int Image::getType() const
+{
+    return type;
 }
 
 ImageGenerator::ImageGenerator()
@@ -49,5 +66,5 @@ ImageGenerator::~ImageGenerator()
 
 Image ImageGenerator::create()
 {
-    return {640, 480};
+    return {Image::RGB, 640, 480};
 }
