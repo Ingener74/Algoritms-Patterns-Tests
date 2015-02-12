@@ -8,9 +8,18 @@
 #ifndef SHAPES_H_
 #define SHAPES_H_
 
+//#include <memory>
+
 class Shape
 {
 public:
+
+//    typedef enum _Form{
+//        RECTANGLE,
+//        CIRCLE,
+//    } Form;
+
+//    static std::shared_ptr<Shape> createShape(Form);
 
     Shape();
     virtual ~Shape();
