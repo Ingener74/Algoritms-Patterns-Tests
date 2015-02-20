@@ -22,7 +22,7 @@ class MainWindow(QWidget):
         self.image = QLabel("Image should here")
         self.vbox.addWidget(self.image)
         
-        image = QImage(im1.getData(), im1.getWidth(), im1.getHeight(), QImage.Format_RGB888);
+        image = QImage(im1.getData(), im1.getWidth(), im1.getHeight(), QImage.Format_RGB888)
         image.save("test.bmp")
         
         self.image.setPixmap(QPixmap.fromImage(image))
