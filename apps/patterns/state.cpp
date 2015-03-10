@@ -27,6 +27,8 @@ public:
 
 class State {
 public:
+    State(){
+    }
     virtual ~State() {
     }
 
@@ -49,14 +51,14 @@ int main(int argc, char **argv) {
     try {
         Machine m;
 
-        m.on();
-        m.on();
+        m.on(); cout << endl;
+        m.on(); cout << endl;
 
-        m.off();
-        m.off();
+        m.off(); cout << endl;
+        m.off(); cout << endl;
 
-        m.on();
-        m.off();
+        m.on();  cout << endl;
+        m.off(); cout << endl;
 
     } catch (const std::exception& e) {
         std::cerr << "exception: " << e.what() << std::endl;
