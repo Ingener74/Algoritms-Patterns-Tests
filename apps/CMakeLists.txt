@@ -51,3 +51,5 @@ add_subdirectory(methods_ref_qualifiers)
 add_subdirectory(automatic_exception_deduction)
 
 add_subdirectory(python)
+
+add_subdirectory(cpp11)
