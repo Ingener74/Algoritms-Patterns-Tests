@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys, os
-from PySide.QtGui import QApplication, QMainWindow, QVBoxLayout, QPushButton, QWidget, QGraphicsView, QLabel, QImage,\
-    QPixmap
-from PySide import QtCore
+from PySide.QtGui import *
+from PySide.QtCore import *
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/apps/python/image_generator')))
 from imagegen import ImageGenerator, Image
@@ -13,9 +12,9 @@ class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         
-        imgen = ImageGenerator()
+#         imgen = ImageGenerator()
         
-        im1 = imgen.create()
+        im1 = Image(Image.RGB, 100, 100)
         
         self.vbox = QVBoxLayout()
         

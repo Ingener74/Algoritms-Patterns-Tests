@@ -35,7 +35,7 @@ Image::~Image()
 
 const char* Image::getData() const
 {
-    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
+    std::cout << __PRETTY_FUNCTION__ << " " << reinterpret_cast<long>(buffer.data()) <<  std::endl;
     return buffer.data();
 }
 
