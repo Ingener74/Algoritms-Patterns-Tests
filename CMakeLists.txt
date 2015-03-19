@@ -55,6 +55,8 @@ if(WITH_SWIG)
     endif()
 endif()
 
+add_subdirectory(3rdparty/glfw)
+
 add_definitions(-std=c++11)
 
 include_directories(
