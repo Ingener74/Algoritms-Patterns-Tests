@@ -8,7 +8,9 @@
 #ifndef IMAGEGENERATOR_H_
 #define IMAGEGENERATOR_H_
 
+#ifndef SWIG
 #include <vector>
+#endif
 
 /*
  * Image

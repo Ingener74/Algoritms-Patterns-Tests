@@ -1,14 +1,17 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(LIBRARY_NAME swigtest)
+set(LIBRARY_NAME SwigTest)
 
 include_directories(.)
 
 add_definitions(-fPIC)
-add_library(${LIBRARY_NAME} ImageGenerator.cpp)
+add_library(${LIBRARY_NAME} 
+    SwigFoo.cpp 
+    SwigFoo.h
+)
 
-set(SWIG_FILE swigtest.i) 
-set(SWIG_MODULE swigtest)
+set(SWIG_FILE ${LIBRARY_NAME}.i) 
+set(SWIG_MODULE ${LIBRARY_NAME})
 
 SET_SOURCE_FILES_PROPERTIES(${SWIG_FILE} PROPERTIES CPLUSPLUS ON)
 SET_SOURCE_FILES_PROPERTIES(${SWIG_FILE} PROPERTIES SWIG_FLAGS "-includeall")
