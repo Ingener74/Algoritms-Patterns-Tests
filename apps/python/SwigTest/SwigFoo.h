@@ -8,11 +8,26 @@
 #ifndef APPS_PYTHON_SWIGTEST_SWIGFOO_H_
 #define APPS_PYTHON_SWIGTEST_SWIGFOO_H_
 
+class SwigBaz {
+public:
+    SwigBaz();
+    virtual ~SwigBaz();
+
+    void testMe();
+
+private:
+};
+
 class SwigBar {
 public:
     SwigBar();
     virtual ~SwigBar();
-    void print() const;
+    void printBar() const;
+
+    SwigBaz* getBaz();
+
+private:
+    SwigBaz baz;
 };
 
 class SwigFoo {
@@ -20,15 +35,7 @@ public:
     SwigFoo();
     virtual ~SwigFoo();
 
-//#ifdef SWIG
-//    %extend {
-//        SwigBar& get(){
-//            return (*$self)getBar();
-//        }
-//    }
-//#else
-    const SwigBar& getBar() const;
-//#endif
+    SwigBar* getBar();
 
 private:
     SwigBar bar;
