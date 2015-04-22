@@ -12,7 +12,7 @@ def get_file_new():
 
     full_ = ''
     for i in file_names:
-        full_ += i + ('' if file_names[-1] == i else ';')
+        full_ += i if file_names[-1] == i else i + ';'
 
     global app
     clipboard = app.clipboard()
