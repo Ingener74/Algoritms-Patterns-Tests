@@ -32,7 +32,7 @@ def main():
 
     tray_menu = QMenu()
 
-    tray_menu.addAction(QIcon(QPixmap('data/file.png')), u'Получить путь файлов', get_file_new)
+    tray_menu.addAction(QIcon(QPixmap('data/file.png')), u'Получить пути файлов', get_file_new)
     tray_menu.addAction(QIcon(QPixmap('data/directory.png')), u'Получить путь директории', get_directory_new)
     tray_menu.addSeparator()
     tray_menu.addAction(QIcon(QPixmap('data/close.png')), u'Выход', app.quit)
