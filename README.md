@@ -1,12 +1,12 @@
-#Algorith, patterns, libraries, tests
+#Алгоритмы, паттерны, тесты...
 
-This repository contain tests for design patterns, some boost features, Qt features and other some programming features
+Репа для всяких тестов, проверок, для посмотреть, затестить и т. д. 
 
-install dependencies
+ставим зависимости
 ```
 sudo apt-get install libboost-dev python-dev qt4-default qt4-demos qt4-designer qt4-dev-tools qt4-doc qt4-doc-html qt4-qmake qt4-qmlviewer qt4-qtconfig libjpeg8-dev libfltk1.3 libfltk1.3-dev
 ```
-build Lua
+собираем Lua
 ```
 cd <somewhere>
 git clone https://github.com/LuaDist/lua.git
