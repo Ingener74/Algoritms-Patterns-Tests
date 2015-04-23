@@ -4,7 +4,11 @@ set(LIBRARY_NAME imagegen)
 
 include_directories(.)
 
-add_definitions(-fPIC)
+if(MINGW)
+else()
+    add_definitions(-fPIC)
+endif()
+
 add_library(${LIBRARY_NAME} ImageGenerator.cpp)
 
 set(SWIG_FILE imagegen.i) 

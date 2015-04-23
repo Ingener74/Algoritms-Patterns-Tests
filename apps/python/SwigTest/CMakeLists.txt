@@ -4,8 +4,12 @@ set(LIBRARY_NAME SwigTest)
 
 include_directories(.)
 
-add_definitions(-fPIC)
-add_library(${LIBRARY_NAME} 
+if(MINGW)
+else()
+    add_definitions(-fPIC)
+endif()
+
+add_library(${LIBRARY_NAME}
     SwigFoo.cpp 
     SwigFoo.h
 )

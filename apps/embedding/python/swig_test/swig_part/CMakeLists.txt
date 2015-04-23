@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 
-add_definitions(-fPIC)
+if(MINGW)
+else()
+    add_definitions(-fPIC)
+endif()
+
 add_library(shapes ../cpp_c_part/shapes.cpp)
 
 SET_SOURCE_FILES_PROPERTIES(shapes.i PROPERTIES CPLUSPLUS ON)

@@ -60,5 +60,5 @@ Circle::~Circle()
 
 double Circle::area()
 {
-    return M_PI * (_R * _R);
+    return 3.1415926 * (_R * _R);
 }
