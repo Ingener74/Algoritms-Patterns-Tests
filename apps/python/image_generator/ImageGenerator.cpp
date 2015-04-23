@@ -14,15 +14,15 @@ using namespace std;
 Image::Image(int type, int width, int height) :
         type(type), width(width), height(height), buffer(type * width * height)
 {
-    std::cout << __PRETTY_FUNCTION__ << " " << type << " " << width << " " << height << " " << buffer.size() << std::endl;
-
     auto ptr = buffer.data();
+    cout << __PRETTY_FUNCTION__ << type << " " << width << " " << height << " " << buffer.size() << endl;
+
     for (int i = 0; i < height; ++i)
     {
         for (int j = 0; j < width; ++j, ptr += type)
         {
-            ptr[0] = 1;
-            ptr[1] = 255;
+            ptr[0] = 255;
+            ptr[1] = 1;
             ptr[2] = 1;
         }
     }
@@ -30,12 +30,12 @@ Image::Image(int type, int width, int height) :
 
 Image::~Image()
 {
-    std::cout << __PRETTY_FUNCTION__ << " " << width << " " << height << " " << buffer.size() << std::endl;
+    cout << __PRETTY_FUNCTION__ << " " << width << " " << height << " " << buffer.size() << endl;
 }
 
-const char* Image::getData() const
+const void* Image::getData() const
 {
-    std::cout << __PRETTY_FUNCTION__ << " " << reinterpret_cast<long>(buffer.data()) <<  std::endl;
+    cout << __PRETTY_FUNCTION__ << " 0x" << hex << reinterpret_cast<long>(buffer.data()) << endl;
     return buffer.data();
 }
 
@@ -56,12 +56,12 @@ int Image::getType() const
 
 ImageGenerator::ImageGenerator()
 {
-    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
+    cout << __PRETTY_FUNCTION__ << "" << endl;
 }
 
 ImageGenerator::~ImageGenerator()
 {
-    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
+    cout << __PRETTY_FUNCTION__ << "" << endl;
 }
 
 Image ImageGenerator::create()
