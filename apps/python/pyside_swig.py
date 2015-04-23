@@ -4,8 +4,9 @@
 import sys, os
 from PySide.QtGui import *
 from PySide.QtCore import *
+from IPython.lib.inputhook import ctypes
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/apps/python/image_generator')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build-linux/apps/python/image_generator')))
 from imagegen import ImageGenerator, Image
 
 class MainWindow(QWidget):
@@ -21,8 +22,9 @@ class MainWindow(QWidget):
         self.image = QLabel("Image should here")
         self.vbox.addWidget(self.image)
         
-        image = QImage(im1.getData(), im1.getWidth(), im1.getHeight(), QImage.Format_RGB888)
-        image.save("test.bmp")
+        buffer_1 = buffer(im1.getData(), 0, im1.getHeight() * im1.getWidth() * im1.getType())
+
+        image = QImage(buffer_1, im1.getWidth(), im1.getHeight(), QImage.Format_RGB888)
         
         self.image.setPixmap(QPixmap.fromImage(image))
         

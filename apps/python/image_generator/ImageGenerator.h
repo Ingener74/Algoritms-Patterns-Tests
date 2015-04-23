@@ -25,7 +25,7 @@ public:
     Image(int type = RGB, int width = 0, int height = 0);
     virtual ~Image();
 
-    const char* getData() const;
+    const void* getData() const;
     int getWidth() const;
     int getHeight() const;
     int getType() const;
