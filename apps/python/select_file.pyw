@@ -10,6 +10,36 @@ from string import maketrans
 
 from PySide.QtGui import QApplication, QFileDialog, QSystemTrayIcon, QMenu, QIcon, QPixmap
 
+LAST_DIRECTORY = 'last_directory'
+CONFIG_FILE    = 'config.json'
+
+def getLastDirectory():
+
+    json_ = json.load(open(CONFIG_FILE, mode='r+'))
+
+    lastDir = json_[LAST_DIRECTORY] if os.path.isdir(json_[LAST_DIRECTORY]) else os.path.dirname(os.path.realpath(sys.argv[0]))
+
+    if len(lastDir) == 0:
+        raise SystemExit
+
+    json_[LAST_DIRECTORY] = lastDir
+    with open(CONFIG_FILE, 'w') as json_file:
+        json.dump(json_, json_file, sort_keys=True, indent=4, separators=(',', ':'))
+    
+    return lastDir
+
+def setLastDirectory(file):
+    json_ = json.load(open(CONFIG_FILE, mode='r+'))
+
+    lastDir = os.path.dirname(os.path.realpath(file))
+    print [lastDir]
+
+    if len(lastDir) == 0:
+        raise SystemExit
+
+    json_[LAST_DIRECTORY] = lastDir
+    with open(CONFIG_FILE, 'w') as json_file:
+        json.dump(json_, json_file, sort_keys=True, indent=4, separators=(',', ':'))
 
 def getFileNew():
     file_names, file_filters = QFileDialog.getOpenFileNames()
@@ -51,17 +81,21 @@ def getTool(tool, comment):
     return toolFileName
 
 def processQrcFile():
-    qrcFileName, _ = QFileDialog.getOpenFileName(caption=u'Выбери qrc файл', filter='*.qrc')
+    qrcFileName, _ = QFileDialog.getOpenFileName(caption=u'Выбери qrc файл', filter='*.qrc', dir=getLastDirectory())
+    setLastDirectory(qrcFileName)
     
-    pyFileName, _ = QFileDialog.getSaveFileName(caption=u'Сохрани py файл, незабудь "resources.qrc" -> "resources_rc.qrc"', filter='*.py')
+    pyFileName, _ = QFileDialog.getSaveFileName(caption=u'Сохрани py файл, незабудь "resources.qrc" -> "resources_rc.qrc"', filter='*.py', dir=getLastDirectory())
+    setLastDirectory(pyFileName)
     
     subprocess.Popen([getTool('pyside_rcc', u'он где то тут: Python27/Lib/site-packages/PySide/pyside-rcc.exe'), qrcFileName, '-o', pyFileName])
 
 def processUiFile():
-    qrcFileName, _ = QFileDialog.getOpenFileName(caption=u'Выбери UI файл', filter='*.ui')
+    qrcFileName, _ = QFileDialog.getOpenFileName(caption=u'Выбери UI файл', filter='*.ui', dir=getLastDirectory())
+    setLastDirectory(qrcFileName)
     
-    pyFileName, _ = QFileDialog.getSaveFileName(caption=u'Сохрани py файл', filter='*.py')
-
+    pyFileName, _ = QFileDialog.getSaveFileName(caption=u'Сохрани py файл', filter='*.py', dir=getLastDirectory())
+    setLastDirectory(pyFileName)
+    
     subprocess.Popen([getTool('pyside_uic', u'он где то тут: Python27/Scripts/pyside-uic.exe'), qrcFileName, '-o', pyFileName])
 
 
