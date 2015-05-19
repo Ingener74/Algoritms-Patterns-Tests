@@ -41,4 +41,54 @@ private:
     SwigBar bar;
 };
 
+#ifdef SWIG
+    %feature("director") A;
+    %feature("director") B;
+    %feature("director") C;
+    %feature("director") D;
+#endif
+
+class A {
+public:
+    virtual ~A() = default;
+    virtual void testA();
+};
+
+class B: virtual public A {
+public:
+    virtual ~B() = default;
+    virtual void testB();
+};
+
+class C: virtual public A {
+public:
+    virtual ~C() = default;
+    virtual void testC();
+};
+
+class D: virtual public A {
+public:
+    virtual ~D() = default;
+    virtual void testD();
+};
+
+class E {
+public:
+    virtual ~E() = default;
+    virtual void testE(B*);
+};
+
+class F {
+public:
+    virtual ~F() = default;
+    virtual void testF(C*);
+};
+
+class T {
+public:
+    virtual ~T() = default;
+    virtual void testT(D*);
+};
+
+
 #endif /* APPS_PYTHON_SWIGTEST_SWIGFOO_H_ */

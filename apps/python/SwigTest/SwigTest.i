@@ -1,6 +1,5 @@
 
-%module SwigTest
-
+%module(directors="1") SwigTest
 %{
 
 #include "SwigFoo.h"
