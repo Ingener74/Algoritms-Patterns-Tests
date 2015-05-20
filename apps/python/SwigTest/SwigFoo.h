@@ -41,6 +41,12 @@ private:
     SwigBar bar;
 };
 
+
+// gdb flags for debug
+//
+//set stop-on-solib-events 1
+//set breakpoint pending on
+
 #ifdef SWIG
     %feature("director") A;
     %feature("director") B;

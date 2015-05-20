@@ -5,8 +5,8 @@ import SwigTest as st
 class Test(st.B, st.C, st.D):
     def __init__(self):
         st.B.__init__(self)
-        st.D.__init__(self)
         st.C.__init__(self)
+        st.D.__init__(self)
 
 def main():
     

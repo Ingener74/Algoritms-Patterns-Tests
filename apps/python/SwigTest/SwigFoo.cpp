@@ -63,6 +63,7 @@ void D::testD() {
 
 void E::testE(B*) {
     cout << __PRETTY_FUNCTION__ << endl;
+
 }
 
 void F::testF(C*) {
